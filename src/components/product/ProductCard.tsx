@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { Product } from '../../types';
 import { useCartStore } from '../../store/cartStore';
@@ -6,6 +6,7 @@ import { Star } from 'lucide-react';
 
 export default function ProductCard({ product }: { product: Product }) {
   const addItem = useCartStore((state) => state.addItem);
+  const [imageError, setImageError] = useState(false);
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -19,12 +20,22 @@ export default function ProductCard({ product }: { product: Product }) {
         
         {/* Image Area */}
         <div className="bg-[#F4F7FB] rounded-xl pt-8 pb-6 px-6 relative h-56 flex items-center justify-center mb-4 overflow-hidden">
-          <img 
-            src={product.images?.[0]?.url || product.images?.[0] || '/placeholder.png'} 
-            alt={product.name} 
-            className="w-full h-full object-contain mix-blend-multiply transition-transform duration-500 group-hover:scale-105"
-            onError={(e) => { e.currentTarget.src = '/placeholder.png'; }}
-          />
+          {!imageError ? (
+            <img 
+              src={product.images?.[0]?.url || product.images?.[0] || '/placeholder.svg'} 
+              alt={product.name} 
+              className="w-full h-full object-contain mix-blend-multiply transition-transform duration-500 group-hover:scale-105"
+              onError={() => setImageError(true)}
+            />
+          ) : (
+            <div className="w-32 h-44 bg-[#161C26] rounded-xl shadow-lg relative flex items-center justify-center border-4 border-slate-800 transition-transform duration-500 group-hover:scale-105">
+              <div className="absolute top-0 w-full h-full flex flex-col items-center justify-center border border-slate-700 rounded-lg m-1 p-2">
+                 <span className="text-blue-500 font-bold text-[10px] tracking-widest text-center leading-tight">
+                   XTOOL<br/>SCAN READY
+                 </span>
+              </div>
+            </div>
+          )}
           
           <div className="absolute top-3 left-3">
              <span className="text-blue-600 font-bold text-[10px] tracking-wider uppercase">XTOOL</span>

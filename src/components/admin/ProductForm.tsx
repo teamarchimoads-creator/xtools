@@ -18,7 +18,7 @@ export default function ProductForm({ initialData }: ProductFormProps) {
     name: '', sku: '', brand: 'XTOOL', category: '',
     slug: '', shortDescription: '', description: '',
     price: 0, originalPrice: 0, discount: 0,
-    images: ['/placeholder.png'], rating: 5, reviewCount: 0,
+    images: ['/placeholder.svg'], rating: 5, reviewCount: 0,
     stock: 0, lowStockThreshold: 5, status: 'published',
     features: [''], specifications: {}, compatibility: [''],
     inTheBox: [''], warranty: '1 Year Warranty'
@@ -81,7 +81,7 @@ export default function ProductForm({ initialData }: ProductFormProps) {
       
       setFormData(prev => {
         const currentImages = prev.images || [];
-        const filtered = currentImages.filter(img => img !== '/placeholder.png');
+        const filtered = currentImages.filter(img => img !== '/placeholder.svg');
         return { ...prev, images: [...filtered, ...uploadedUrls] };
       });
     } catch (err) {
@@ -130,9 +130,9 @@ export default function ProductForm({ initialData }: ProductFormProps) {
     e.preventDefault();
     try {
       const payload = { ...formData };
-      if (payload.images && payload.images.length > 0 && typeof payload.images[0] === 'string') {
-        payload.images = payload.images.map((url, index) => ({
-          url: typeof url === 'string' ? url : (url as any).url,
+      if (payload.images && payload.images.length > 0) {
+        payload.images = payload.images.map((img, index) => ({
+          url: typeof img === 'string' ? img : (img as any).url,
           isMain: index === 0
         })) as any;
       }
@@ -286,7 +286,7 @@ export default function ProductForm({ initialData }: ProductFormProps) {
           <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-4 mt-4">
             {formData.images.map((img, i) => {
               const imgSrc = typeof img === 'string' ? img : (img as any).url;
-              if (imgSrc === '/placeholder.png') return null;
+              if (imgSrc === '/placeholder.svg') return null;
               
               return (
                 <div key={i} className="relative group aspect-square border rounded-lg overflow-hidden bg-slate-50">

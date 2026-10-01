@@ -12,6 +12,7 @@ export default function ProductDetailPage() {
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
   const addItem = useCartStore(state => state.addItem);
 
   useEffect(() => {
@@ -51,13 +52,30 @@ export default function ProductDetailPage() {
         <div className="bg-white rounded-2xl shadow-sm border p-6 lg:p-12 mb-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             {/* Image section */}
-            <div className="bg-slate-50 rounded-xl p-8 flex items-center justify-center relative">
-              {product.discount > 0 && (
-                <div className="absolute top-4 left-4 bg-red-500 text-white font-bold px-3 py-1 rounded">
-                  {product.discount}% OFF
+            <div className="flex flex-col gap-4">
+              <div className="bg-slate-50 rounded-xl p-8 flex items-center justify-center relative">
+                {product.discount > 0 && (
+                  <div className="absolute top-4 left-4 bg-red-500 text-white font-bold px-3 py-1 rounded">
+                    {product.discount}% OFF
+                  </div>
+                )}
+                <img src={product.images[activeImageIndex]?.url || product.images[activeImageIndex] || '/placeholder.svg'} alt={product.name} className="w-full h-auto max-h-[500px] object-contain mix-blend-multiply transition-opacity duration-300" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = '/placeholder.svg'; }} />
+              </div>
+              
+              {/* Thumbnails */}
+              {product.images && product.images.length > 1 && (
+                <div className="flex gap-4 overflow-x-auto pb-2 hide-scrollbar">
+                  {product.images.map((img: any, idx: number) => (
+                    <button
+                      key={idx}
+                      onClick={() => setActiveImageIndex(idx)}
+                      className={`w-24 h-24 flex-shrink-0 rounded-lg border-2 p-2 bg-slate-50 flex items-center justify-center transition-all ${activeImageIndex === idx ? 'border-blue-600' : 'border-transparent hover:border-blue-300'}`}
+                    >
+                      <img src={img?.url || img || '/placeholder.svg'} alt={`${product.name} thumbnail ${idx + 1}`} className="max-w-full max-h-full object-contain mix-blend-multiply" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = '/placeholder.svg'; }} />
+                    </button>
+                  ))}
                 </div>
               )}
-              <img src={product.images[0]?.url || product.images[0] || '/placeholder.png'} alt={product.name} className="w-full h-auto max-h-[500px] object-contain mix-blend-multiply" onError={(e) => { e.currentTarget.src = '/placeholder.png'; }} />
             </div>
 
             {/* Content section */}
@@ -76,6 +94,12 @@ export default function ProductDetailPage() {
                 <span className="text-slate-500">{product.rating} ({product.reviewCount} reviews)</span>
               </div>
 
+              {product.shortDescription && (
+                <p className="text-slate-700 font-medium text-lg mb-6 leading-relaxed">
+                  {product.shortDescription}
+                </p>
+              )}
+
               <div className="flex items-end space-x-3 mb-6">
                 <span className="text-4xl font-bold text-slate-900">₹{product.price.toLocaleString('en-IN')}</span>
                 {product.originalPrice > product.price && (
@@ -83,9 +107,11 @@ export default function ProductDetailPage() {
                 )}
               </div>
 
-              <p className="text-slate-600 mb-8 leading-relaxed">
-                {product.description}
-              </p>
+              {product.description && (
+                <div className="text-slate-600 mb-8 leading-relaxed whitespace-pre-wrap">
+                  {product.description}
+                </div>
+              )}
 
               <div className="flex flex-col sm:flex-row gap-4 mb-8">
                 <button 
@@ -135,12 +161,23 @@ export default function ProductDetailPage() {
           <div className="bg-white rounded-2xl shadow-sm border p-8">
             <h2 className="text-2xl font-bold text-slate-900 mb-6">Specifications</h2>
             <div className="divide-y">
-              {Object.entries(product.specifications).map(([key, value]) => (
-                <div key={key} className="py-3 flex">
-                  <span className="w-1/3 font-medium text-slate-500">{key}</span>
-                  <span className="w-2/3 text-slate-900">{String(value)}</span>
-                </div>
-              ))}
+              {Array.isArray(product.specifications) 
+                ? product.specifications.map((spec: any, i: number) => {
+                    if (!spec.name || !spec.value) return null;
+                    return (
+                      <div key={i} className="py-3 flex">
+                        <span className="w-1/3 font-medium text-slate-500">{spec.name}</span>
+                        <span className="w-2/3 text-slate-900">{spec.value}</span>
+                      </div>
+                    );
+                  })
+                : Object.entries(product.specifications || {}).map(([key, value]) => (
+                    <div key={key} className="py-3 flex">
+                      <span className="w-1/3 font-medium text-slate-500">{key}</span>
+                      <span className="w-2/3 text-slate-900">{String(value)}</span>
+                    </div>
+                  ))
+              }
             </div>
           </div>
         </div>

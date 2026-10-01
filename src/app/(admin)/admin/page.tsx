@@ -132,7 +132,7 @@ export default function AdminDashboardPage() {
                 <div key={product.id} className="py-3 flex justify-between items-center">
                   <div className="flex items-center space-x-3">
                     <div className="w-10 h-10 bg-slate-50 rounded border flex items-center justify-center p-1">
-                      <img src={product.images[0]?.url || product.images[0] || '/placeholder.png'} alt={product.name} className="max-w-full max-h-full object-contain" onError={(e) => { e.currentTarget.src = '/placeholder.png'; }} />
+                      <img src={product.images[0]?.url || product.images[0] || '/placeholder.svg'} alt={product.name} className="max-w-full max-h-full object-contain" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = '/placeholder.svg'; }} />
                     </div>
                     <div>
                       <div className="font-medium text-slate-900">{product.name}</div>

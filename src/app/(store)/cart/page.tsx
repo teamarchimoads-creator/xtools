@@ -110,7 +110,7 @@ export default function CartPage() {
               {items.map((item) => (
                 <div key={item.product.id} className="p-6 flex flex-col sm:flex-row gap-6">
                   <div className="w-24 h-24 bg-slate-50 rounded-lg flex-shrink-0 flex items-center justify-center">
-                    <img src={item.product.images[0]?.url || item.product.images[0] || '/placeholder.png'} alt={item.product.name} className="w-full h-full object-contain mix-blend-multiply p-2" onError={(e) => { e.currentTarget.src = '/placeholder.png'; }} />
+                    <img src={item.product.images[0]?.url || item.product.images[0] || '/placeholder.svg'} alt={item.product.name} className="w-full h-full object-contain mix-blend-multiply p-2" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = '/placeholder.svg'; }} />
                   </div>
                   <div className="flex-grow">
                     <div className="flex justify-between items-start mb-2">
