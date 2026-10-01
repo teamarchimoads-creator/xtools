@@ -12,7 +12,7 @@ export default function Header() {
       <div className="bg-[#1C3E6D] text-white text-[11px] py-1.5 px-4 flex justify-between items-center max-w-full">
         <div className="container mx-auto px-4 max-w-7xl flex flex-col sm:flex-row justify-center sm:justify-between items-center gap-1 sm:gap-0 text-center">
           <span className="font-medium tracking-wide uppercase">IN Pan-India Delivery • GST Invoice Available</span>
-          <span className="font-medium">Support: +91 98XX-XXXXXX</span>
+          <span className="font-medium">Support: +91 8708057398</span>
         </div>
       </div>
 

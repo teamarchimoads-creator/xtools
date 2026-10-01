@@ -8,9 +8,7 @@ export default function ContactPage() {
   const [email, setEmail] = useState('');
   const [interest, setInterest] = useState('General Inquiry');
   const [message, setMessage] = useState('');
-
-  const adminWhatsApp = '919999999999';
-
+  const adminWhatsApp = '918708057398';
   const handleWhatsApp = () => {
     if (!name || !phone) {
       alert('Please fill out your name and phone number.');
@@ -39,7 +37,7 @@ export default function ContactPage() {
               <Phone className="w-6 h-6" />
             </div>
             <h3 className="text-lg font-medium text-slate-800 mb-1">Call Us</h3>
-            <p className="text-slate-600 mb-1">+91 98XX-XXXXXX</p>
+            <p className="text-slate-600 mb-1">+91 8708057398</p>
             <p className="text-slate-400 text-sm">Mon – Sat, 10AM – 7PM</p>
           </div>
 

@@ -1,7 +1,7 @@
 import React from 'react';
 
 export default function WhatsAppBadge() {
-  const adminWhatsApp = '919999999999'; // Replace with actual number
+  const adminWhatsApp = '918708057398'; // Replace with actual number
   const message = 'Hello! I need some help.';
   const whatsappUrl = `https://wa.me/${adminWhatsApp}?text=${encodeURIComponent(message)}`;
 
