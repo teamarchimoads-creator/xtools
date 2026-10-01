@@ -42,6 +42,12 @@ export default function AdminOrderDetailsPage() {
         body: JSON.stringify({ action: 'approve_payment' })
       });
       if (!res.ok) throw new Error('Failed to approve');
+      
+      const message = `Hello ${order.customer.name},\n\nYour payment for order #${order.orderNumber} has been successfully approved! Your order is now confirmed.\n\nThank you for choosing XTOOL!`;
+      const encodedMessage = encodeURIComponent(message);
+      const phone = order.customer.phone.replace(/[^0-9+]/g, '');
+      window.open(`https://wa.me/${phone}?text=${encodedMessage}`, '_blank');
+      
       fetchOrder();
     } catch (err) {
       alert('Error approving payment');
