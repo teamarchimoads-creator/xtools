@@ -208,11 +208,9 @@ export default function ProductForm({ initialData }: ProductFormProps) {
 
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">Status</label>
-            <select name="status" value={formData.status || 'Draft'} onChange={handleChange} className="w-full border rounded-lg p-2 text-slate-900 bg-white">
+            <select name="status" value={formData.status || 'in_stock'} onChange={handleChange} className="w-full border rounded-lg p-2 text-slate-900 bg-white">
               <option value="in_stock">In Stock</option>
               <option value="out_of_stock">Out of Stock</option>
-              <option value="draft">Draft</option>
-              <option value="archived">Archived</option>
             </select>
           </div>
         </div>

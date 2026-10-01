@@ -86,7 +86,6 @@ export default function AdminProductsPage() {
                   <td className="px-6 py-4">
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${(product.status === 'published' || product.status === 'in_stock') ? 'bg-blue-100 text-blue-800' : 'bg-slate-100 text-slate-800'}`}>
                       {product.status ? product.status.replace('_', ' ') : 'draft'}
-                      {product.status}
                     </span>
                   </td>
                   <td className="px-6 py-4 text-right">
