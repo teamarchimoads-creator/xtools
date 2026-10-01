@@ -3,13 +3,13 @@ import connectToDatabase from '../../../../lib/mongodb';
 import Order from '../../../../models/Order';
 import PaymentSettings from '../../../../models/PaymentSettings';
 
-export async function GET(request: Request, { params }: { params: { orderId: string } }) {
+export async function GET(request: Request, props: { params: Promise<{ orderId: string }> }) {
   try {
     await connectToDatabase();
     
     // We await params in nextjs 15+ but if it's an older nextjs it's just params.
     // Assuming standard Next.js app router here.
-    const { orderId } = await Promise.resolve(params);
+    const { orderId } = await props.params;
 
     const order = await Order.findById(orderId);
     if (!order) {

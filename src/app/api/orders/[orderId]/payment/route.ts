@@ -2,9 +2,9 @@ import { NextResponse } from 'next/server';
 import connectToDatabase from '../../../../../lib/mongodb';
 import Order from '../../../../../models/Order';
 
-export async function POST(request: Request, { params }: { params: { orderId: string } }) {
+export async function POST(request: Request, props: { params: Promise<{ orderId: string }> }) {
   try {
-    const { orderId } = await Promise.resolve(params);
+    const { orderId } = await props.params;
     const body = await request.json();
     await connectToDatabase();
 

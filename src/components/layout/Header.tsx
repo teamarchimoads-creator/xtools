@@ -1,16 +1,16 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
-import { Search, Menu } from 'lucide-react';
+import { Search, Menu, X } from 'lucide-react';
 
 export default function Header() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
     <>
       {/* Top Banner */}
       <div className="bg-[#1C3E6D] text-white text-[11px] py-1.5 px-4 flex justify-between items-center max-w-full">
-        <div className="container mx-auto px-4 max-w-7xl flex justify-between items-center">
+        <div className="container mx-auto px-4 max-w-7xl flex flex-col sm:flex-row justify-center sm:justify-between items-center gap-1 sm:gap-0 text-center">
           <span className="font-medium tracking-wide uppercase">IN Pan-India Delivery • GST Invoice Available</span>
           <span className="font-medium">Support: +91 98XX-XXXXXX</span>
         </div>
@@ -53,15 +53,43 @@ export default function Header() {
 
             {/* Account & Cart */}
             <div className="flex items-center gap-4">
-
-              <button className="lg:hidden p-2 text-slate-600 hover:text-blue-600 transition-colors">
+              <button 
+                onClick={() => setIsMobileMenuOpen(true)}
+                className="lg:hidden p-2 text-slate-600 hover:text-blue-600 transition-colors"
+              >
                 <Menu className="w-6 h-6" />
               </button>
             </div>
           </div>
-
         </div>
       </header>
+
+      {/* Mobile Navigation Overlay */}
+      {isMobileMenuOpen && (
+        <div className="fixed inset-0 z-[9999] bg-white flex flex-col pt-6 px-6 lg:hidden shadow-2xl">
+          <div className="flex items-center justify-between mb-12">
+            <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3">
+              <img src="/assets/xtool-logo.webp" alt="XTOOL Logo" className="h-8 w-auto object-contain" />
+              <span className="font-bold text-[20px] tracking-tight text-[#0B254E]">XTOOL Store</span>
+            </Link>
+            <button 
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="p-2 text-slate-600 hover:text-blue-600 bg-slate-100 rounded-full"
+            >
+              <X className="w-6 h-6" />
+            </button>
+          </div>
+          
+          <nav className="flex flex-col gap-6 text-xl font-medium text-slate-800">
+            <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="border-b border-slate-100 pb-4 hover:text-blue-600">Home</Link>
+            <Link href="/scanners" onClick={() => setIsMobileMenuOpen(false)} className="border-b border-slate-100 pb-4 hover:text-blue-600">Scanners</Link>
+            <Link href="/categories" onClick={() => setIsMobileMenuOpen(false)} className="border-b border-slate-100 pb-4 hover:text-blue-600">Categories</Link>
+            <Link href="/reviews" onClick={() => setIsMobileMenuOpen(false)} className="border-b border-slate-100 pb-4 hover:text-blue-600">Reviews</Link>
+            <Link href="/why-us" onClick={() => setIsMobileMenuOpen(false)} className="border-b border-slate-100 pb-4 hover:text-blue-600">Why Us</Link>
+            <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)} className="border-b border-slate-100 pb-4 hover:text-blue-600">Contact</Link>
+          </nav>
+        </div>
+      )}
     </>
   );
 }

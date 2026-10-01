@@ -25,7 +25,7 @@ export default function ProductCard({ product }: { product: Product }) {
           <div className="bg-[#F4F7FB] rounded-xl pt-8 pb-6 px-6 relative h-56 flex items-center justify-center mb-4 overflow-hidden">
             {!imageError ? (
               <Image 
-                src={product.images?.[0]?.url || product.images?.[0] || '/placeholder.svg'} 
+                src={(product.images?.[0] as any)?.url || (product.images?.[0] as string) || '/placeholder.svg'} 
                 alt={product.name} 
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"

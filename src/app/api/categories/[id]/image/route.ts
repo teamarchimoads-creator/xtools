@@ -2,8 +2,9 @@ import { NextResponse } from 'next/server';
 import connectToDatabase from '../../../../../lib/mongodb';
 import Category from '../../../../../models/Category';
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+export async function GET(request: Request, props: { params: Promise<{ id: string }> }) {
   try {
+    const params = await props.params;
     await connectToDatabase();
     
     // Find the category and ONLY fetch the image field

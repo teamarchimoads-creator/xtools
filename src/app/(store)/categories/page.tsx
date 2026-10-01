@@ -79,7 +79,20 @@ export default function CategoriesPage() {
             <div key={category.id} className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col md:flex-row">
               {/* Left Side: Icon & Title */}
               <div className="w-full md:w-64 bg-slate-50 p-8 flex flex-col items-center justify-center text-center border-b md:border-b-0 md:border-r border-slate-100 flex-shrink-0">
-                {getCategoryIcon(category.slug)}
+                <div className="w-28 h-28 mb-4 flex items-center justify-center">
+                  <img 
+                    src={`/api/categories/${category.id}/image`} 
+                    alt={category.name} 
+                    className="w-full h-full object-contain" 
+                    onError={(e) => { 
+                      e.currentTarget.style.display = 'none'; 
+                      e.currentTarget.nextElementSibling?.classList.remove('hidden'); 
+                    }} 
+                  />
+                  <div className="hidden">
+                    {getCategoryIcon(category.slug)}
+                  </div>
+                </div>
                 <h2 className="text-lg font-bold text-slate-800 leading-tight mb-1">{category.name}</h2>
                 <p className="text-xs text-slate-500">{getCategorySubtitle(category.slug)}</p>
               </div>
