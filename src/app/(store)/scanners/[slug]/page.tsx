@@ -59,7 +59,7 @@ export default function ProductDetailPage() {
                     {product.discount}% OFF
                   </div>
                 )}
-                <img src={product.images[activeImageIndex]?.url || product.images[activeImageIndex] || '/placeholder.svg'} alt={product.name} className="w-full h-auto max-h-[500px] object-contain mix-blend-multiply transition-opacity duration-300" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = '/placeholder.svg'; }} />
+                <img src={(product.images[activeImageIndex] as any)?.url || product.images[activeImageIndex] || '/placeholder.svg'} alt={product.name} className="w-full h-auto max-h-[500px] object-contain mix-blend-multiply transition-opacity duration-300" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = '/placeholder.svg'; }} />
               </div>
               
               {/* Thumbnails */}

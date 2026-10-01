@@ -1,12 +1,10 @@
 'use client';
 import React from 'react';
 import Link from 'next/link';
-import { Search, ShoppingCart, User, Menu } from 'lucide-react';
-import { useCartStore } from '../../store/cartStore';
+import Image from 'next/image';
+import { Search, Menu } from 'lucide-react';
 
 export default function Header() {
-  const items = useCartStore((state) => state.items);
-  const cartItemsCount = items.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
     <>
@@ -25,7 +23,7 @@ export default function Header() {
           {/* Logo & Main Nav */}
           <div className="flex items-center gap-8">
             <Link href="/" className="flex items-center gap-3">
-              <img src="/assets/xtool-logo.webp" alt="XTOOL Logo" className="h-8 w-auto object-contain" />
+              <Image src="/assets/xtool-logo.webp" alt="XTOOL Logo" width={32} height={32} className="h-8 w-auto object-contain" />
               <span className="font-bold text-[22px] tracking-tight text-[#0B254E]">Auto Diagnostic Store</span>
             </Link>
 

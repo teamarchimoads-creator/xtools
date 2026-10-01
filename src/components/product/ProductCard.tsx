@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Product } from '../../types';
 import { useCartStore } from '../../store/cartStore';
 import { Star } from 'lucide-react';
@@ -22,10 +23,11 @@ export default function ProductCard({ product }: { product: Product }) {
         <Link href={`/scanners/${product.id}`} className="block">
           <div className="bg-[#F4F7FB] rounded-xl pt-8 pb-6 px-6 relative h-56 flex items-center justify-center mb-4 overflow-hidden">
             {!imageError ? (
-              <img 
+              <Image 
                 src={product.images?.[0]?.url || product.images?.[0] || '/placeholder.svg'} 
                 alt={product.name} 
-                className="w-full h-full object-contain mix-blend-multiply transition-transform duration-500 group-hover:scale-105"
+                fill
+                className="object-contain mix-blend-multiply transition-transform duration-500 group-hover:scale-105 p-4"
                 onError={() => setImageError(true)}
               />
             ) : (

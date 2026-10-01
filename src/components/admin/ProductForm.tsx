@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Product } from '../../types';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 interface ProductFormProps {
   initialData?: Product;
@@ -137,13 +138,13 @@ export default function ProductForm({ initialData }: ProductFormProps) {
     const newSpecs = Array.isArray(formData.specifications) ? [...formData.specifications] : [];
     if (!newSpecs[index]) newSpecs[index] = { name: '', value: '' };
     newSpecs[index] = { ...newSpecs[index], [field]: val };
-    setFormData(prev => ({ ...prev, specifications: newSpecs as any }));
+    setFormData(prev => ({ ...prev, specifications: newSpecs }));
   };
 
   const addSpec = () => {
     const newSpecs = Array.isArray(formData.specifications) ? [...formData.specifications] : [];
     newSpecs.push({ name: '', value: '' });
-    setFormData(prev => ({ ...prev, specifications: newSpecs as any }));
+    setFormData(prev => ({ ...prev, specifications: newSpecs }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -152,9 +153,9 @@ export default function ProductForm({ initialData }: ProductFormProps) {
       const payload = { ...formData };
       if (payload.images && payload.images.length > 0) {
         payload.images = payload.images.map((img, index) => ({
-          url: typeof img === 'string' ? img : (img as any).url,
+          url: typeof img === 'string' ? img : (img as {url: string}).url,
           isMain: index === 0
-        })) as any;
+        })) as unknown as string[];
       }
 
       let res;
@@ -270,7 +271,7 @@ export default function ProductForm({ initialData }: ProductFormProps) {
 
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">Specifications</label>
-            {Array.isArray(formData.specifications) && formData.specifications.map((spec: any, i: number) => (
+            {Array.isArray(formData.specifications) && formData.specifications.map((spec: { name: string; value: string }, i: number) => (
               <div key={i} className="flex gap-2 mb-2">
                 <input type="text" value={spec.name || ''} onChange={(e) => handleSpecChange(i, 'name', e.target.value)} className="w-1/3 border rounded-lg p-2 text-slate-900 bg-white" placeholder="Name (e.g. Display)" />
                 <input type="text" value={spec.value || ''} onChange={(e) => handleSpecChange(i, 'value', e.target.value)} className="w-2/3 border rounded-lg p-2 text-slate-900 bg-white" placeholder="Value (e.g. 7 inch Touchscreen)" />
@@ -321,12 +322,12 @@ export default function ProductForm({ initialData }: ProductFormProps) {
         {formData.images && formData.images.length > 0 && (
           <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-4 mt-4">
             {formData.images.map((img, i) => {
-              const imgSrc = typeof img === 'string' ? img : (img as any).url;
+              const imgSrc = typeof img === 'string' ? img : (img as { url: string }).url;
               if (imgSrc === '/placeholder.svg') return null;
               
               return (
                 <div key={i} className="relative group aspect-square border rounded-lg overflow-hidden bg-slate-50">
-                  <img src={imgSrc} alt={`Product ${i+1}`} className="w-full h-full object-cover" />
+                  <Image src={imgSrc} alt={`Product ${i+1}`} fill className="object-cover" />
                   <button 
                     type="button"
                     onClick={(e) => { e.stopPropagation(); removeImage(i); }}
