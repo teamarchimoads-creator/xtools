@@ -173,10 +173,8 @@ export default function Home() {
               categories.map((category) => (
                 <Link href={`/categories/${category.slug}`} key={category.id} className="snap-start shrink-0 w-[180px] flex flex-col items-center justify-center bg-white rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-md hover:border-blue-200 transition-all text-center group">
                   <div className="w-16 h-16 mb-4 flex items-center justify-center transform group-hover:scale-110 transition-transform">
-                    {category.image ? (
-                      <img src={category.image} alt={category.name} className="w-full h-full object-contain" onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.nextElementSibling?.classList.remove('hidden'); }} />
-                    ) : null}
-                    <div className={`text-4xl ${category.image ? 'hidden' : ''}`}>
+                    <img src={`/api/categories/${category.id}/image`} alt={category.name} className="w-full h-full object-contain" onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.nextElementSibling?.classList.remove('hidden'); }} />
+                    <div className="text-4xl hidden">
                       {getCategoryIcon(category.slug)}
                     </div>
                   </div>

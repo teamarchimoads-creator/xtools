@@ -60,11 +60,9 @@ export default function CategoryDetailPage() {
       <div className="bg-white border-b">
         <div className="container mx-auto px-4 py-12 max-w-7xl">
           <div className="flex items-center gap-6">
-            {category.image && (
               <div className="w-24 h-24 shrink-0 rounded-xl bg-slate-50 border p-2 flex items-center justify-center shadow-sm">
-                <img src={category.image} alt={category.name} className="w-full h-full object-contain" />
+                <img src={`/api/categories/${category.id}/image`} alt={category.name} className="w-full h-full object-contain" onError={(e) => { e.currentTarget.parentElement!.style.display = 'none'; }} />
               </div>
-            )}
             <div>
               <h1 className="text-3xl font-bold text-slate-900 mb-2">{category.name}</h1>
               <p className="text-slate-600 max-w-2xl">{category.description}</p>
