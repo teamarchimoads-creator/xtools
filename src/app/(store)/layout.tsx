@@ -2,6 +2,7 @@ import React from 'react';
 import Header from '../../components/layout/Header';
 import Footer from '../../components/layout/Footer';
 import FloatingCart from '../../components/cart/FloatingCart';
+import WhatsAppBadge from '../../components/layout/WhatsAppBadge';
 
 export default function StoreLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -12,6 +13,7 @@ export default function StoreLayout({ children }: { children: React.ReactNode })
       </main>
       <Footer />
       <FloatingCart />
+      <WhatsAppBadge />
     </div>
   );
 }
