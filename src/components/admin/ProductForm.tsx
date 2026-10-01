@@ -19,7 +19,7 @@ export default function ProductForm({ initialData }: ProductFormProps) {
     slug: '', shortDescription: '', description: '',
     price: 0, originalPrice: 0, discount: 0,
     images: ['/placeholder.svg'], rating: 5, reviewCount: 0,
-    stock: 0, lowStockThreshold: 5, status: 'published',
+    stock: 0, lowStockThreshold: 5, status: 'in_stock',
     features: [''], specifications: {}, compatibility: [''],
     inTheBox: [''], warranty: '1 Year Warranty'
   });
@@ -209,7 +209,8 @@ export default function ProductForm({ initialData }: ProductFormProps) {
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">Status</label>
             <select name="status" value={formData.status || 'Draft'} onChange={handleChange} className="w-full border rounded-lg p-2 text-slate-900 bg-white">
-              <option value="published">Published</option>
+              <option value="in_stock">In Stock</option>
+              <option value="out_of_stock">Out of Stock</option>
               <option value="draft">Draft</option>
               <option value="archived">Archived</option>
             </select>
