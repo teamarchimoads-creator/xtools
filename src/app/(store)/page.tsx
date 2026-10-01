@@ -90,18 +90,54 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Right side floating card */}
-            <div className="hidden lg:flex justify-end relative z-10">
-              <div className="bg-white text-slate-800 rounded-2xl p-8 shadow-2xl flex items-center gap-8 w-full max-w-lg relative border-4 border-white/20 transform -translate-x-12 translate-y-4">
-                <div className="absolute -inset-4 bg-white/20 rounded-3xl -z-10"></div>
-                <div className="flex-1">
-                  <div className="text-blue-500 font-bold text-xs tracking-wider mb-2 uppercase">Featured</div>
-                  <h3 className="text-2xl font-semibold mb-3">XTOOL Diagnostic<br />Series</h3>
-                  <p className="text-slate-500 text-sm">Advanced tools for technicians, garages and serious car owners.</p>
+            {/* Right side floating elements */}
+            <div className="hidden lg:flex relative z-10 justify-center items-center h-[500px] w-full">
+              <style>{`
+                @keyframes float-complex {
+                  0% { transform: translateY(0px) rotate(0deg) scale(1); filter: drop-shadow(0 30px 40px rgba(0,0,0,0.4)); }
+                  33% { transform: translateY(-20px) rotate(3deg) scale(1.05); filter: drop-shadow(0 40px 50px rgba(0,0,0,0.3)); }
+                  66% { transform: translateY(-10px) rotate(-2deg) scale(0.98); filter: drop-shadow(0 20px 30px rgba(0,0,0,0.45)); }
+                  100% { transform: translateY(0px) rotate(0deg) scale(1); filter: drop-shadow(0 30px 40px rgba(0,0,0,0.4)); }
+                }
+                @keyframes float-text {
+                  0%, 100% { transform: translateY(0px); }
+                  50% { transform: translateY(-15px); }
+                }
+                @keyframes pulse-glow {
+                  0%, 100% { opacity: 0.3; transform: scale(1) translate(-50%, -50%); }
+                  50% { opacity: 0.6; transform: scale(1.2) translate(-50%, -50%); }
+                }
+                .animate-float-complex {
+                  animation: float-complex 8s ease-in-out infinite;
+                }
+                .animate-float-text {
+                  animation: float-text 6s ease-in-out infinite;
+                }
+                .glow-effect {
+                  animation: pulse-glow 4s ease-in-out infinite;
+                  transform-origin: top left;
+                }
+              `}</style>
+              
+              {/* Background Glow */}
+              <div className="absolute top-1/2 left-1/2 w-[500px] h-[500px] bg-blue-300/30 rounded-full blur-[100px] glow-effect -z-10 pointer-events-none"></div>
+              
+              {/* Huge Scanner Image */}
+              <div className="absolute z-10 w-[600px] h-[600px] flex items-center justify-center animate-float-complex -right-10">
+                <img src="/assets/heroimage.png" alt="XTOOL Diagnostic Scanner" className="w-full h-full object-contain drop-shadow-[0_25px_35px_rgba(0,0,0,0.5)]" />
+              </div>
+
+              {/* Floating Text Element */}
+              <div className="absolute bottom-16 left-0 z-20 max-w-xs animate-float-text drop-shadow-2xl" style={{ animationDelay: '1s' }}>
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="relative flex h-3 w-3">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-300 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-3 w-3 bg-amber-400"></span>
+                  </span>
+                  <div className="text-amber-400 font-extrabold text-xs tracking-widest uppercase shadow-black">FEATURED</div>
                 </div>
-                <div className="w-48 h-60 flex items-center justify-center flex-shrink-0 relative transform transition-transform hover:scale-105">
-                  <img src="/assets/heroimage.png" alt="XTOOL Diagnostic Scanner" className="w-full h-full object-contain drop-shadow-2xl" />
-                </div>
+                <h3 className="text-4xl font-black text-white mb-3 leading-tight drop-shadow-md">XTOOL<br/>Diagnostic Series</h3>
+                <p className="text-blue-50 text-base leading-relaxed font-medium drop-shadow-md">Advanced tools for technicians, garages and serious car owners.</p>
               </div>
             </div>
           </div>
