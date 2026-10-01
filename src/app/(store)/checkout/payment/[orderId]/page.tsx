@@ -120,7 +120,7 @@ export default function PaymentPage() {
             <div className="bg-[#f9f8f4] rounded-2xl p-8 border shadow-sm sticky top-24">
               <div className="flex justify-center mb-6">
                 <div className="bg-white p-4 rounded-xl shadow-sm inline-block">
-                  <img src={paymentSettings?.qrCodeUrl || "/qrcode.png"} alt="Payment QR Code" className="w-56 h-56 object-contain" />
+                  <img src={paymentSettings?.qrCodeUrl || "/assets/qrcode.png"} alt="Payment QR Code" className="w-56 h-56 object-contain" />
                 </div>
               </div>
               
