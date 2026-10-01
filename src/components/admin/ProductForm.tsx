@@ -14,13 +14,20 @@ export default function ProductForm({ initialData }: ProductFormProps) {
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   
+  const initialSpecs = initialData?.specifications;
+  const defaultSpecs = initialSpecs 
+    ? (Array.isArray(initialSpecs) 
+        ? initialSpecs 
+        : Object.entries(initialSpecs).map(([name, value]) => ({ name, value })))
+    : [{ name: '', value: '' }];
+
   const [formData, setFormData] = useState<Partial<Product>>(initialData || {
     name: '', sku: '', brand: 'XTOOL', category: '',
     slug: '', shortDescription: '', description: '',
     price: 0, originalPrice: 0, discount: 0,
     images: ['/placeholder.svg'], rating: 5, reviewCount: 0,
     stock: 0, lowStockThreshold: 5, status: 'in_stock',
-    features: [''], specifications: Array.isArray(initialData?.specifications) ? initialData.specifications : Object.entries(initialData?.specifications || {}).map(([name, value]) => ({ name, value })), compatibility: [''],
+    features: [''], specifications: defaultSpecs as any, compatibility: [''],
     inTheBox: [''], warranty: '1 Year Warranty'
   });
 
