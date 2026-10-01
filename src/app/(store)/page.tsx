@@ -160,7 +160,14 @@ export default function Home() {
           <div className="flex overflow-x-auto pb-6 gap-4 snap-x hide-scrollbar">
             {categories.map((category) => (
               <Link href={`/categories/${category.slug}`} key={category.id} className="snap-start shrink-0 w-[180px] flex flex-col items-center justify-center bg-white rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-md hover:border-blue-200 transition-all text-center">
-                <div className="text-4xl mb-4 transform group-hover:scale-110 transition-transform">{getCategoryIcon(category.slug)}</div>
+                <div className="w-16 h-16 mb-4 flex items-center justify-center transform group-hover:scale-110 transition-transform">
+                  {category.image ? (
+                    <img src={category.image} alt={category.name} className="w-full h-full object-contain" onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.nextElementSibling?.classList.remove('hidden'); }} />
+                  ) : null}
+                  <div className={`text-4xl ${category.image ? 'hidden' : ''}`}>
+                    {getCategoryIcon(category.slug)}
+                  </div>
+                </div>
                 <h3 className="text-sm font-semibold text-slate-800 mb-1 leading-snug">{category.name}</h3>
                 <p className="text-xs text-slate-400">{getCategorySubtitle(category.slug)}</p>
               </Link>

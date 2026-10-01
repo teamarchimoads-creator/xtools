@@ -20,7 +20,7 @@ export default function ProductForm({ initialData }: ProductFormProps) {
     price: 0, originalPrice: 0, discount: 0,
     images: ['/placeholder.svg'], rating: 5, reviewCount: 0,
     stock: 0, lowStockThreshold: 5, status: 'in_stock',
-    features: [''], specifications: {}, compatibility: [''],
+    features: [''], specifications: Array.isArray(initialData?.specifications) ? initialData.specifications : Object.entries(initialData?.specifications || {}).map(([name, value]) => ({ name, value })), compatibility: [''],
     inTheBox: [''], warranty: '1 Year Warranty'
   });
 
@@ -125,6 +125,19 @@ export default function ProductForm({ initialData }: ProductFormProps) {
   };
 
   const addFeature = () => setFormData(prev => ({ ...prev, features: [...(prev.features || []), ''] }));
+
+  const handleSpecChange = (index: number, field: 'name' | 'value', val: string) => {
+    const newSpecs = Array.isArray(formData.specifications) ? [...formData.specifications] : [];
+    if (!newSpecs[index]) newSpecs[index] = { name: '', value: '' };
+    newSpecs[index] = { ...newSpecs[index], [field]: val };
+    setFormData(prev => ({ ...prev, specifications: newSpecs as any }));
+  };
+
+  const addSpec = () => {
+    const newSpecs = Array.isArray(formData.specifications) ? [...formData.specifications] : [];
+    newSpecs.push({ name: '', value: '' });
+    setFormData(prev => ({ ...prev, specifications: newSpecs as any }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -246,6 +259,23 @@ export default function ProductForm({ initialData }: ProductFormProps) {
               <input key={i} type="text" value={feature} onChange={(e) => handleFeatureChange(i, e.target.value)} className="w-full border rounded-lg p-2 mb-2 text-slate-900 bg-white" placeholder={`Feature ${i + 1}`} />
             ))}
             <button type="button" onClick={addFeature} className="text-blue-600 text-sm font-medium mt-1">+ Add Feature</button>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-1">Specifications</label>
+            {Array.isArray(formData.specifications) && formData.specifications.map((spec: any, i: number) => (
+              <div key={i} className="flex gap-2 mb-2">
+                <input type="text" value={spec.name || ''} onChange={(e) => handleSpecChange(i, 'name', e.target.value)} className="w-1/3 border rounded-lg p-2 text-slate-900 bg-white" placeholder="Name (e.g. Display)" />
+                <input type="text" value={spec.value || ''} onChange={(e) => handleSpecChange(i, 'value', e.target.value)} className="w-2/3 border rounded-lg p-2 text-slate-900 bg-white" placeholder="Value (e.g. 7 inch Touchscreen)" />
+              </div>
+            ))}
+            {(!formData.specifications || (Array.isArray(formData.specifications) && formData.specifications.length === 0)) && (
+               <div className="flex gap-2 mb-2">
+                 <input type="text" onChange={(e) => handleSpecChange(0, 'name', e.target.value)} className="w-1/3 border rounded-lg p-2 text-slate-900 bg-white" placeholder="Name (e.g. Display)" />
+                 <input type="text" onChange={(e) => handleSpecChange(0, 'value', e.target.value)} className="w-2/3 border rounded-lg p-2 text-slate-900 bg-white" placeholder="Value (e.g. 7 inch Touchscreen)" />
+               </div>
+            )}
+            <button type="button" onClick={addSpec} className="text-blue-600 text-sm font-medium mt-1">+ Add Specification</button>
           </div>
         </div>
       </div>
