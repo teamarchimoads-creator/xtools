@@ -23,7 +23,7 @@ export default function Header() {
           {/* Logo & Main Nav */}
           <div className="flex items-center gap-8">
             <Link href="/" className="flex items-center gap-3">
-              <Image src="/assets/xtool-logo.webp" alt="XTOOL Logo" width={32} height={32} className="h-8 w-auto object-contain" />
+              <img src="/assets/xtool-logo.webp" alt="XTOOL Logo" className="h-8 w-auto object-contain" />
               <span className="font-bold text-[22px] tracking-tight text-[#0B254E]">Auto Diagnostic Store</span>
             </Link>
 

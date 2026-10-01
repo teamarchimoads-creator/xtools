@@ -33,6 +33,7 @@ export default function Home() {
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
+  const [categoriesLoading, setCategoriesLoading] = useState(true);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -54,6 +55,8 @@ export default function Home() {
         setCategories(data.categories || []);
       } catch (error) {
         console.error('Failed to fetch categories:', error);
+      } finally {
+        setCategoriesLoading(false);
       }
     };
     
@@ -158,20 +161,30 @@ export default function Home() {
           <p className="text-slate-500 mb-8">Choose the right diagnostic solution for your requirement.</p>
 
           <div className="flex overflow-x-auto pb-6 gap-4 snap-x hide-scrollbar">
-            {categories.map((category) => (
-              <Link href={`/categories/${category.slug}`} key={category.id} className="snap-start shrink-0 w-[180px] flex flex-col items-center justify-center bg-white rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-md hover:border-blue-200 transition-all text-center">
-                <div className="w-16 h-16 mb-4 flex items-center justify-center transform group-hover:scale-110 transition-transform">
-                  {category.image ? (
-                    <img src={category.image} alt={category.name} className="w-full h-full object-contain" onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.nextElementSibling?.classList.remove('hidden'); }} />
-                  ) : null}
-                  <div className={`text-4xl ${category.image ? 'hidden' : ''}`}>
-                    {getCategoryIcon(category.slug)}
-                  </div>
+            {categoriesLoading ? (
+              [1, 2, 3, 4, 5, 6].map((i) => (
+                <div key={i} className="snap-start shrink-0 w-[180px] flex flex-col items-center justify-center bg-white rounded-2xl p-6 border border-slate-100 shadow-sm animate-pulse">
+                  <div className="w-16 h-16 mb-4 bg-slate-200 rounded-full"></div>
+                  <div className="h-4 bg-slate-200 rounded w-24 mb-2"></div>
+                  <div className="h-3 bg-slate-200 rounded w-16"></div>
                 </div>
-                <h3 className="text-sm font-semibold text-slate-800 mb-1 leading-snug">{category.name}</h3>
-                <p className="text-xs text-slate-400">{getCategorySubtitle(category.slug)}</p>
-              </Link>
-            ))}
+              ))
+            ) : (
+              categories.map((category) => (
+                <Link href={`/categories/${category.slug}`} key={category.id} className="snap-start shrink-0 w-[180px] flex flex-col items-center justify-center bg-white rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-md hover:border-blue-200 transition-all text-center group">
+                  <div className="w-16 h-16 mb-4 flex items-center justify-center transform group-hover:scale-110 transition-transform">
+                    {category.image ? (
+                      <img src={category.image} alt={category.name} className="w-full h-full object-contain" onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.nextElementSibling?.classList.remove('hidden'); }} />
+                    ) : null}
+                    <div className={`text-4xl ${category.image ? 'hidden' : ''}`}>
+                      {getCategoryIcon(category.slug)}
+                    </div>
+                  </div>
+                  <h3 className="text-sm font-semibold text-slate-800 mb-1 leading-snug">{category.name}</h3>
+                  <p className="text-xs text-slate-400">{getCategorySubtitle(category.slug)}</p>
+                </Link>
+              ))
+            )}
           </div>
         </div>
       </section>
@@ -190,9 +203,15 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {products.slice(0, 4).map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
+            {loading ? (
+              [1, 2, 3, 4].map((i) => (
+                <div key={i} className="h-80 bg-slate-100 rounded-2xl animate-pulse"></div>
+              ))
+            ) : (
+              products.slice(0, 4).map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))
+            )}
           </div>
         </div>
       </section>

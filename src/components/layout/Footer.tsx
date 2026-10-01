@@ -10,7 +10,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
-              <Image src="/assets/xtool-logo.webp" alt="XTOOL Logo" width={40} height={40} className="h-10 w-auto object-contain bg-white rounded p-1" />
+              <img src="/assets/xtool-logo.webp" alt="XTOOL Logo" className="h-10 w-auto object-contain bg-white rounded p-1" />
             </div>
             <p className="text-sm leading-relaxed mt-4">
               Auto Diagnostic Store brings professional-level automotive diagnostic tools to customers across India.

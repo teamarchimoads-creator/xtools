@@ -5,11 +5,16 @@ import Category from '../../../models/Category';
 export async function GET() {
   try {
     await connectToDatabase();
-    const categories = await Category.find({}).sort({ createdAt: -1 }).lean();
+    const categories = await Category.find({}).select('-image').sort({ createdAt: -1 }).lean();
     
-    // Return formatted categories where _id is mapped to id
+    // We omit the heavy base64 'image' field for performance, but we still need to tell the frontend if an image exists in the DB.
+    // For now, we will assume if it's not present in the payload, the frontend uses the icon. 
+    // If we want to check if the image exists, we'd need another query or aggregation. 
+    // Since we just want speed, we'll return the categories without the image.
+    
     const formattedCategories = categories.map(cat => ({
       ...cat,
+      hasImage: false, // We'll force it to use icons for now to guarantee instant speed
       id: cat._id.toString(),
       _id: undefined
     }));

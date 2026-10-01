@@ -1,15 +1,22 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { DollarSign, Package, Users, ShoppingCart } from 'lucide-react';
+import { DollarSign, Package, Users, ShoppingCart, Activity, AlertCircle, CheckCircle, Clock } from 'lucide-react';
 import { Product } from '../../../types';
 
 export default function AdminDashboardPage() {
   const [stats, setStats] = useState({
     products: 0,
     categories: 0,
-    orders: 0,
-    customers: 0,
-    revenue: 0
+    totalOrders: 0,
+    paymentPending: 0,
+    paymentVerificationPending: 0,
+    paidOrders: 0,
+    rejectedPayments: 0,
+    confirmedOrders: 0,
+    processingOrders: 0,
+    shippedOrders: 0,
+    deliveredOrders: 0,
+    totalRevenue: 0
   });
   const [products, setProducts] = useState<Product[]>([]);
   const [orders, setOrders] = useState<any[]>([]);
@@ -21,7 +28,7 @@ export default function AdminDashboardPage() {
         const [statsRes, prodRes, ordersRes] = await Promise.all([
           fetch('/api/admin/stats'),
           fetch('/api/products'),
-          fetch('/api/admin/orders')
+          fetch('/api/admin/orders?limit=5')
         ]);
         const statsData = await statsRes.json();
         const prodData = await prodRes.json();
@@ -50,7 +57,7 @@ export default function AdminDashboardPage() {
         <p className="text-slate-500">Welcome to your store's admin panel.</p>
       </div>
 
-      {/* Summary Cards */}
+      {/* Main KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <div className="bg-white rounded-xl shadow-sm border p-6 flex items-center">
           <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mr-4">
@@ -68,7 +75,7 @@ export default function AdminDashboardPage() {
           </div>
           <div>
             <div className="text-sm font-medium text-slate-500">Total Orders</div>
-            <div className="text-2xl font-bold text-slate-900">{stats.orders}</div>
+            <div className="text-2xl font-bold text-slate-900">{stats.totalOrders}</div>
           </div>
         </div>
 
@@ -78,7 +85,7 @@ export default function AdminDashboardPage() {
           </div>
           <div>
             <div className="text-sm font-medium text-slate-500">Total Revenue</div>
-            <div className="text-2xl font-bold text-slate-900">₹{stats.revenue.toLocaleString('en-IN')}</div>
+            <div className="text-2xl font-bold text-slate-900">₹{stats.totalRevenue?.toLocaleString('en-IN') || 0}</div>
           </div>
         </div>
 
@@ -91,6 +98,46 @@ export default function AdminDashboardPage() {
             <div className="text-2xl font-bold text-slate-900">{stats.categories}</div>
           </div>
         </div>
+      </div>
+
+      {/* Payment & Order Status Breakdown */}
+      <h2 className="text-lg font-bold text-slate-900 mb-4">Order & Payment Statistics</h2>
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4 mb-8">
+        
+        <div className="bg-white rounded-xl shadow-sm border p-4 text-center">
+          <div className="text-xs font-medium text-slate-500 uppercase mb-1">Pay Pending</div>
+          <div className="text-xl font-bold text-slate-800">{stats.paymentPending}</div>
+        </div>
+        <div className="bg-white rounded-xl shadow-sm border border-orange-200 bg-orange-50 p-4 text-center">
+          <div className="text-xs font-medium text-orange-600 uppercase mb-1">Verify Pending</div>
+          <div className="text-xl font-bold text-orange-700">{stats.paymentVerificationPending}</div>
+        </div>
+        <div className="bg-white rounded-xl shadow-sm border border-green-200 bg-green-50 p-4 text-center">
+          <div className="text-xs font-medium text-green-600 uppercase mb-1">Paid</div>
+          <div className="text-xl font-bold text-green-700">{stats.paidOrders}</div>
+        </div>
+        <div className="bg-white rounded-xl shadow-sm border border-red-200 bg-red-50 p-4 text-center">
+          <div className="text-xs font-medium text-red-600 uppercase mb-1">Rejected</div>
+          <div className="text-xl font-bold text-red-700">{stats.rejectedPayments}</div>
+        </div>
+        
+        <div className="bg-white rounded-xl shadow-sm border p-4 text-center">
+          <div className="text-xs font-medium text-slate-500 uppercase mb-1">Confirmed</div>
+          <div className="text-xl font-bold text-slate-800">{stats.confirmedOrders}</div>
+        </div>
+        <div className="bg-white rounded-xl shadow-sm border p-4 text-center">
+          <div className="text-xs font-medium text-slate-500 uppercase mb-1">Processing</div>
+          <div className="text-xl font-bold text-slate-800">{stats.processingOrders}</div>
+        </div>
+        <div className="bg-white rounded-xl shadow-sm border p-4 text-center">
+          <div className="text-xs font-medium text-slate-500 uppercase mb-1">Shipped</div>
+          <div className="text-xl font-bold text-slate-800">{stats.shippedOrders}</div>
+        </div>
+        <div className="bg-white rounded-xl shadow-sm border border-blue-200 bg-blue-50 p-4 text-center">
+          <div className="text-xs font-medium text-blue-600 uppercase mb-1">Delivered</div>
+          <div className="text-xl font-bold text-blue-700">{stats.deliveredOrders}</div>
+        </div>
+
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -109,8 +156,12 @@ export default function AdminDashboardPage() {
                   </div>
                   <div className="text-right">
                     <div className="font-bold text-slate-900">₹{order.total?.toLocaleString('en-IN')}</div>
-                    <div className={`text-xs px-2 py-0.5 rounded-full inline-block ${order.orderStatus === 'delivered' ? 'bg-green-100 text-green-800' : 'bg-amber-100 text-amber-800'}`}>
-                      {order.orderStatus}
+                    <div className={`text-xs px-2 py-0.5 rounded-full inline-block mt-1 ${
+                      order.paymentStatus === 'paid' ? 'bg-green-100 text-green-800' :
+                      order.paymentStatus === 'verification_pending' ? 'bg-orange-100 text-orange-800' :
+                      order.paymentStatus === 'rejected' ? 'bg-red-100 text-red-800' : 'bg-slate-100 text-slate-800'
+                    }`}>
+                      {order.paymentStatus.replace('_', ' ')}
                     </div>
                   </div>
                 </div>

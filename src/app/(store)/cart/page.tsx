@@ -2,14 +2,16 @@
 import React, { useState } from 'react';
 import { useCartStore } from '../../../store/cartStore';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Trash2, ShoppingCart } from 'lucide-react';
 
 export default function CartPage() {
   const { items, updateQuantity, removeItem, getTotals, clearCart } = useCartStore();
   const { subtotal, shipping, gst, total } = getTotals();
+  const router = useRouter();
   
   const [isCheckingOut, setIsCheckingOut] = useState(false);
-  const [orderSuccess, setOrderSuccess] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: 'John Doe',
     email: 'john@example.com',
@@ -18,16 +20,20 @@ export default function CartPage() {
     city: 'New Delhi',
     state: 'Delhi',
     pinCode: '110001',
-    paymentMethod: 'COD'
+    gstNumber: '',
+    companyName: ''
   });
 
   const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
     const newOrder = {
       customer: {
         name: formData.name,
         email: formData.email,
         phone: formData.phone,
+        gstNumber: formData.gstNumber,
+        companyName: formData.companyName,
       },
       shippingAddress: {
         name: formData.name,
@@ -50,7 +56,7 @@ export default function CartPage() {
       shippingCost: shipping,
       gst,
       total,
-      paymentMethod: formData.paymentMethod,
+      paymentMethod: 'manual_qr',
     };
     
     try {
@@ -60,33 +66,15 @@ export default function CartPage() {
         body: JSON.stringify(newOrder)
       });
       if (!res.ok) throw new Error('Order failed');
+      const data = await res.json();
       clearCart();
-      setOrderSuccess(true);
-      setIsCheckingOut(false);
+      router.push(`/checkout/payment/${data.order._id}`);
     } catch (err) {
       console.error('Failed to create order', err);
       alert('Failed to process your order. Please try again.');
+      setIsSubmitting(false);
     }
   };
-
-  if (orderSuccess) {
-    return (
-      <div className="bg-slate-50 min-h-screen py-16">
-        <div className="container mx-auto px-4 max-w-3xl text-center">
-        <div className="bg-white rounded-2xl shadow-sm border p-12">
-          <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
-            <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" /></svg>
-          </div>
-          <h1 className="text-3xl font-bold text-slate-900 mb-4">Order Placed Successfully!</h1>
-          <p className="text-slate-600 mb-8">Thank you for your purchase. Your order has been confirmed.</p>
-          <Link href="/scanners" className="bg-blue-600 text-white font-medium py-3 px-8 rounded-lg hover:bg-blue-700 transition-colors">
-            Continue Shopping
-          </Link>
-        </div>
-        </div>
-      </div>
-    );
-  }
 
   if (items.length === 0) {
     return (
@@ -188,6 +176,10 @@ export default function CartPage() {
                   <input required type="text" className="w-full border rounded p-2" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} />
                 </div>
                 <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Email Address</label>
+                  <input required type="email" className="w-full border rounded p-2" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} />
+                </div>
+                <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">Address</label>
                   <input required type="text" className="w-full border rounded p-2" value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} />
                 </div>
@@ -201,13 +193,21 @@ export default function CartPage() {
                     <input required type="text" className="w-full border rounded p-2" value={formData.pinCode} onChange={e => setFormData({...formData, pinCode: e.target.value})} />
                   </div>
                 </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Company Name (Optional)</label>
+                  <input type="text" className="w-full border rounded p-2" value={formData.companyName} onChange={e => setFormData({...formData, companyName: e.target.value})} />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">GST Number (Optional)</label>
+                  <input type="text" className="w-full border rounded p-2" value={formData.gstNumber} onChange={e => setFormData({...formData, gstNumber: e.target.value})} />
+                </div>
                 <div className="pt-4 border-t">
                   <div className="flex justify-between font-bold text-lg text-slate-900 mb-4">
                     <span>Amount to Pay</span>
                     <span>₹{total.toLocaleString('en-IN')}</span>
                   </div>
-                  <button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors text-center mb-2">
-                    Place Order
+                  <button type="submit" disabled={isSubmitting} className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-70 text-white font-medium py-3 px-4 rounded-lg transition-colors text-center mb-2">
+                    {isSubmitting ? 'Processing...' : 'Place Order & Pay'}
                   </button>
                   <button type="button" onClick={() => setIsCheckingOut(false)} className="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium py-3 px-4 rounded-lg transition-colors text-center">
                     Back to Cart

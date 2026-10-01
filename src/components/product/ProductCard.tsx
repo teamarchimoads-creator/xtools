@@ -1,3 +1,4 @@
+'use client';
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -27,6 +28,7 @@ export default function ProductCard({ product }: { product: Product }) {
                 src={product.images?.[0]?.url || product.images?.[0] || '/placeholder.svg'} 
                 alt={product.name} 
                 fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                 className="object-contain mix-blend-multiply transition-transform duration-500 group-hover:scale-105 p-4"
                 onError={() => setImageError(true)}
               />

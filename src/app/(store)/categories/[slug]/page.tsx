@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import ProductCard from '../../../../components/product/ProductCard';
 import { Category, Product } from '../../../../types';
+import { PageSpinner } from '../../../../components/Spinner';
 
 export default function CategoryDetailPage() {
   const params = useParams();
@@ -40,7 +41,7 @@ export default function CategoryDetailPage() {
   }, [slug]);
 
   if (loading) {
-    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+    return <PageSpinner />;
   }
 
   if (!category) {
