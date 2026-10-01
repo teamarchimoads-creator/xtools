@@ -20,7 +20,7 @@ export interface IProduct extends Document {
   reviewCount: number;
   stock: number;
   lowStockThreshold: number;
-  status: 'published' | 'draft' | 'archived';
+  status: 'published' | 'draft' | 'archived' | 'in_stock' | 'out_of_stock';
   features: string[];
   specifications: {
     name: string;
@@ -55,8 +55,8 @@ const ProductSchema: Schema<IProduct> = new Schema({
   lowStockThreshold: { type: Number, default: 5 },
   status: { 
     type: String, 
-    enum: ['published', 'draft', 'archived'], 
-    default: 'draft',
+    enum: ['published', 'draft', 'archived', 'in_stock', 'out_of_stock'], 
+    default: 'in_stock',
     index: true
   },
   features: [{ type: String }],
