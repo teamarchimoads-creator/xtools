@@ -92,17 +92,26 @@ export default function Home() {
             
             {/* Right side floating card */}
             <div className="hidden lg:flex justify-end relative z-10">
-              <div className="bg-white text-slate-800 rounded-2xl p-8 shadow-2xl flex items-center gap-8 w-full max-w-lg relative border-4 border-white/20 transform -translate-x-12 translate-y-4">
+              <style>{`
+                @keyframes tilt-axis {
+                  0%, 100% { transform: perspective(1000px) rotateY(0deg) rotateX(0deg) translateY(0); }
+                  25% { transform: perspective(1000px) rotateY(-8deg) rotateX(4deg) translateY(-10px); }
+                  75% { transform: perspective(1000px) rotateY(8deg) rotateX(-4deg) translateY(10px); }
+                }
+                .animate-fixed-axis-rotate {
+                  animation: tilt-axis 8s ease-in-out infinite;
+                  transform-style: preserve-3d;
+                }
+              `}</style>
+              <div className="bg-white text-slate-800 rounded-2xl p-8 shadow-2xl flex items-center gap-8 w-full max-w-lg relative border-4 border-white/20 animate-fixed-axis-rotate -translate-x-12 translate-y-4">
                 <div className="absolute -inset-4 bg-white/20 rounded-3xl -z-10"></div>
                 <div className="flex-1">
                   <div className="text-blue-500 font-bold text-xs tracking-wider mb-2 uppercase">Featured</div>
                   <h3 className="text-2xl font-semibold mb-3">XTOOL Diagnostic<br/>Series</h3>
                   <p className="text-slate-500 text-sm">Advanced tools for technicians, garages and serious car owners.</p>
                 </div>
-                <div className="w-32 h-40 bg-[#161C26] rounded-xl flex items-center justify-center shadow-inner flex-shrink-0 border-2 border-slate-700 relative overflow-hidden">
-                   <div className="absolute inset-2 border border-slate-600 rounded-lg flex items-center justify-center p-2">
-                     <span className="text-blue-400 font-bold text-center text-xs">XTOOL<br/>DIAGNOSTIC</span>
-                   </div>
+                <div className="w-48 h-60 flex items-center justify-center flex-shrink-0 relative transform transition-transform hover:scale-105">
+                  <img src="/assets/heroimage.png" alt="XTOOL Diagnostic Scanner" className="w-full h-full object-contain drop-shadow-2xl" />
                 </div>
               </div>
             </div>
