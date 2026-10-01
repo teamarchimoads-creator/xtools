@@ -41,7 +41,7 @@ export default function CartPage() {
         productId: item.product.id,
         name: item.product.name,
         sku: item.product.sku,
-        image: item.product.images[0],
+        image: item.product.images[0]?.url || item.product.images[0],
         price: item.product.price,
         quantity: item.quantity,
         total: item.product.price * item.quantity,
@@ -110,7 +110,7 @@ export default function CartPage() {
               {items.map((item) => (
                 <div key={item.product.id} className="p-6 flex flex-col sm:flex-row gap-6">
                   <div className="w-24 h-24 bg-slate-50 rounded-lg flex-shrink-0 flex items-center justify-center">
-                    <img src={item.product.images[0] || '/placeholder.png'} alt={item.product.name} className="w-full h-full object-contain mix-blend-multiply p-2" />
+                    <img src={item.product.images[0]?.url || item.product.images[0] || '/placeholder.png'} alt={item.product.name} className="w-full h-full object-contain mix-blend-multiply p-2" onError={(e) => { e.currentTarget.src = '/placeholder.png'; }} />
                   </div>
                   <div className="flex-grow">
                     <div className="flex justify-between items-start mb-2">

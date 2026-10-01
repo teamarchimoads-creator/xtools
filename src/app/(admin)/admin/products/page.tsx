@@ -65,7 +65,7 @@ export default function AdminProductsPage() {
                 <tr key={product.id} className="hover:bg-slate-50 transition-colors">
                   <td className="px-6 py-4 flex items-center space-x-4">
                     <div className="w-12 h-12 bg-white rounded border flex items-center justify-center p-1">
-                      <img src={product.images[0] || '/placeholder.png'} alt={product.name} className="max-w-full max-h-full object-contain" />
+                      <img src={product.images[0]?.url || product.images[0] || '/placeholder.png'} alt={product.name} className="max-w-full max-h-full object-contain" onError={(e) => { e.currentTarget.src = '/placeholder.png'; }} />
                     </div>
                     <div>
                       <div className="font-medium text-slate-900">{product.name}</div>

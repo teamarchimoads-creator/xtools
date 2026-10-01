@@ -65,7 +65,8 @@ export default function ProductForm({ initialData }: ProductFormProps) {
     setIsUploading(true);
     try {
       const uploadedUrls: string[] = [];
-      for (const file of Array.from(files)) {
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
         const form = new FormData();
         form.append('file', file);
         const res = await fetch('/api/upload', { method: 'POST', body: form });

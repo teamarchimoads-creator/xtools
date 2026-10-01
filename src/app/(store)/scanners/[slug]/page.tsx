@@ -57,7 +57,7 @@ export default function ProductDetailPage() {
                   {product.discount}% OFF
                 </div>
               )}
-              <img src={product.images[0] || '/placeholder.png'} alt={product.name} className="w-full h-auto max-h-[500px] object-contain mix-blend-multiply" />
+              <img src={product.images[0]?.url || product.images[0] || '/placeholder.png'} alt={product.name} className="w-full h-auto max-h-[500px] object-contain mix-blend-multiply" onError={(e) => { e.currentTarget.src = '/placeholder.png'; }} />
             </div>
 
             {/* Content section */}
