@@ -85,14 +85,7 @@ export default function ProductDetailPage() {
               </div>
               <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">{product.name}</h1>
               
-              <div className="flex items-center space-x-4 mb-6">
-                <div className="flex text-amber-400">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className={`w-5 h-5 ${i < Math.floor(product.rating) ? 'fill-current' : 'text-slate-200'}`} />
-                  ))}
-                </div>
-                <span className="text-slate-500">{product.rating} ({product.reviewCount} reviews)</span>
-              </div>
+
 
               {product.shortDescription && (
                 <p className="text-slate-700 font-medium text-lg mb-6 leading-relaxed">

@@ -52,10 +52,7 @@ export default function Header() {
 
             {/* Account & Cart */}
             <div className="flex items-center gap-4">
-              <Link href="/admin" className="hidden sm:flex items-center gap-2 px-4 py-2 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors text-sm font-semibold text-slate-700 shadow-sm h-10">
-                Account
-              </Link>
-              
+
               <button className="lg:hidden p-2 text-slate-600 hover:text-blue-600 transition-colors">
                 <Menu className="w-6 h-6" />
               </button>

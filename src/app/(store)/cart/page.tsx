@@ -71,7 +71,8 @@ export default function CartPage() {
 
   if (orderSuccess) {
     return (
-      <div className="container mx-auto px-4 py-16 max-w-3xl text-center">
+      <div className="bg-slate-50 min-h-screen py-16">
+        <div className="container mx-auto px-4 max-w-3xl text-center">
         <div className="bg-white rounded-2xl shadow-sm border p-12">
           <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
             <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" /></svg>
@@ -82,26 +83,30 @@ export default function CartPage() {
             Continue Shopping
           </Link>
         </div>
+        </div>
       </div>
     );
   }
 
   if (items.length === 0) {
     return (
-      <div className="container mx-auto px-4 py-16 max-w-4xl text-center">
-        <ShoppingCart className="w-20 h-20 text-slate-300 mx-auto mb-6" />
-        <h1 className="text-3xl font-bold text-slate-900 mb-4">Your Cart is Empty</h1>
-        <p className="text-slate-600 mb-8">Looks like you haven't added any diagnostic scanners to your cart yet.</p>
-        <Link href="/scanners" className="bg-blue-600 text-white font-medium py-3 px-8 rounded-lg hover:bg-blue-700 transition-colors">
-          Browse Products
-        </Link>
+      <div className="bg-slate-50 min-h-screen py-16">
+        <div className="container mx-auto px-4 max-w-4xl text-center">
+          <ShoppingCart className="w-20 h-20 text-slate-300 mx-auto mb-6" />
+          <h1 className="text-3xl font-bold text-slate-900 mb-4">Your Cart is Empty</h1>
+          <p className="text-slate-600 mb-8">Looks like you haven't added any diagnostic scanners to your cart yet.</p>
+          <Link href="/scanners" className="bg-blue-600 text-white font-medium py-3 px-8 rounded-lg hover:bg-blue-700 transition-colors">
+            Browse Products
+          </Link>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-7xl">
-      <h1 className="text-3xl font-bold text-slate-900 mb-8">Shopping Cart</h1>
+    <div className="bg-slate-50 min-h-screen py-12">
+      <div className="container mx-auto px-4 max-w-7xl">
+        <h1 className="text-3xl font-bold text-slate-900 mb-8">Shopping Cart</h1>
       
       <div className="flex flex-col lg:flex-row gap-8">
         <div className="lg:w-2/3">
@@ -211,6 +216,7 @@ export default function CartPage() {
               </form>
             </div>
           )}
+        </div>
         </div>
       </div>
     </div>
