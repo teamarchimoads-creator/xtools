@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Product } from '../../types';
 import { useRouter } from 'next/navigation';
 
@@ -10,6 +10,8 @@ interface ProductFormProps {
 export default function ProductForm({ initialData }: ProductFormProps) {
   const router = useRouter();
   const [categories, setCategories] = useState<any[]>([]);
+  const [isDragging, setIsDragging] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   
   const [formData, setFormData] = useState<Partial<Product>>(initialData || {
     name: '', sku: '', brand: 'XTOOL', category: '',
@@ -33,6 +35,46 @@ export default function ProductForm({ initialData }: ProductFormProps) {
     };
     fetchCategories();
   }, []);
+
+  useEffect(() => {
+    const handleGlobalPaste = (e: ClipboardEvent) => {
+      if (e.clipboardData && e.clipboardData.files.length > 0) {
+        handleFiles(e.clipboardData.files);
+      }
+    };
+    window.addEventListener('paste', handleGlobalPaste);
+    return () => window.removeEventListener('paste', handleGlobalPaste);
+  }, []);
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    if (e.dataTransfer.files) handleFiles(e.dataTransfer.files);
+  };
+  
+  const handleFiles = (files: FileList) => {
+    const newImages = Array.from(files).map(file => URL.createObjectURL(file));
+    setFormData(prev => {
+      const currentImages = prev.images || [];
+      const filtered = currentImages.filter(img => img !== '/placeholder.png');
+      return { ...prev, images: [...filtered, ...newImages] };
+    });
+  };
+
+  const removeImage = (index: number) => {
+    setFormData(prev => ({
+      ...prev,
+      images: prev.images?.filter((_, i) => i !== index)
+    }));
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -81,23 +123,23 @@ export default function ProductForm({ initialData }: ProductFormProps) {
           
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">Product Name</label>
-            <input required type="text" name="name" value={formData.name || ''} onChange={handleChange} className="w-full border rounded-lg p-2" />
+            <input required type="text" name="name" value={formData.name || ''} onChange={handleChange} className="w-full border rounded-lg p-2 text-slate-900 bg-white" />
           </div>
           
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">SKU</label>
-              <input required type="text" name="sku" value={formData.sku || ''} onChange={handleChange} className="w-full border rounded-lg p-2" />
+              <input required type="text" name="sku" value={formData.sku || ''} onChange={handleChange} className="w-full border rounded-lg p-2 text-slate-900 bg-white" />
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">Brand</label>
-              <input required type="text" name="brand" value={formData.brand || ''} onChange={handleChange} className="w-full border rounded-lg p-2" />
+              <input required type="text" name="brand" value={formData.brand || ''} onChange={handleChange} className="w-full border rounded-lg p-2 text-slate-900 bg-white" />
             </div>
           </div>
 
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">Category</label>
-            <select name="category" value={formData.category as string || ''} onChange={handleChange} className="w-full border rounded-lg p-2" required>
+            <select name="category" value={formData.category as string || ''} onChange={handleChange} className="w-full border rounded-lg p-2 text-slate-900 bg-white" required>
               <option value="">Select a Category</option>
               {categories.map(c => (
                 <option key={c.id} value={c.id}>{c.name}</option>
@@ -107,17 +149,17 @@ export default function ProductForm({ initialData }: ProductFormProps) {
 
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">Short Description</label>
-            <textarea name="shortDescription" value={formData.shortDescription || ''} onChange={handleChange} className="w-full border rounded-lg p-2 h-20" />
+            <textarea name="shortDescription" value={formData.shortDescription || ''} onChange={handleChange} className="w-full border rounded-lg p-2 h-20 text-slate-900 bg-white" />
           </div>
 
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">Description</label>
-            <textarea name="description" value={formData.description || ''} onChange={handleChange} className="w-full border rounded-lg p-2 h-20" />
+            <textarea name="description" value={formData.description || ''} onChange={handleChange} className="w-full border rounded-lg p-2 h-20 text-slate-900 bg-white" />
           </div>
 
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">Status</label>
-            <select name="status" value={formData.status || 'Draft'} onChange={handleChange} className="w-full border rounded-lg p-2">
+            <select name="status" value={formData.status || 'Draft'} onChange={handleChange} className="w-full border rounded-lg p-2 text-slate-900 bg-white">
               <option value="published">Published</option>
               <option value="draft">Draft</option>
               <option value="archived">Archived</option>
@@ -131,33 +173,77 @@ export default function ProductForm({ initialData }: ProductFormProps) {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">Selling Price (₹)</label>
-              <input required type="number" name="price" value={formData.price || 0} onChange={handleChange} className="w-full border rounded-lg p-2" />
+              <input required type="number" name="price" value={formData.price || 0} onChange={handleChange} className="w-full border rounded-lg p-2 text-slate-900 bg-white" />
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">Original Price (₹)</label>
-              <input required type="number" name="originalPrice" value={formData.originalPrice || 0} onChange={handleChange} className="w-full border rounded-lg p-2" />
+              <input required type="number" name="originalPrice" value={formData.originalPrice || 0} onChange={handleChange} className="w-full border rounded-lg p-2 text-slate-900 bg-white" />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">Discount (%)</label>
-              <input type="number" name="discount" value={formData.discount || 0} onChange={handleChange} className="w-full border rounded-lg p-2" />
+              <input type="number" name="discount" value={formData.discount || 0} onChange={handleChange} className="w-full border rounded-lg p-2 text-slate-900 bg-white" />
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">Stock Quantity</label>
-              <input required type="number" name="stock" value={formData.stock || 0} onChange={handleChange} className="w-full border rounded-lg p-2" />
+              <input required type="number" name="stock" value={formData.stock || 0} onChange={handleChange} className="w-full border rounded-lg p-2 text-slate-900 bg-white" />
             </div>
           </div>
 
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">Features</label>
             {formData.features?.map((feature, i) => (
-              <input key={i} type="text" value={feature} onChange={(e) => handleFeatureChange(i, e.target.value)} className="w-full border rounded-lg p-2 mb-2" placeholder={`Feature ${i + 1}`} />
+              <input key={i} type="text" value={feature} onChange={(e) => handleFeatureChange(i, e.target.value)} className="w-full border rounded-lg p-2 mb-2 text-slate-900 bg-white" placeholder={`Feature ${i + 1}`} />
             ))}
             <button type="button" onClick={addFeature} className="text-blue-600 text-sm font-medium mt-1">+ Add Feature</button>
           </div>
         </div>
+      </div>
+
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold text-slate-900 border-b pb-2">Product Images</h3>
+        <div 
+          className={`border-2 border-dashed rounded-xl p-8 text-center transition-colors cursor-pointer ${
+            isDragging ? 'border-blue-500 bg-blue-50' : 'border-slate-300 hover:bg-slate-50'
+          }`}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+          onClick={() => fileInputRef.current?.click()}
+        >
+          <input 
+            type="file" 
+            multiple 
+            accept="image/*" 
+            className="hidden" 
+            ref={fileInputRef}
+            onChange={(e) => e.target.files && handleFiles(e.target.files)}
+          />
+          <div className="text-slate-500">
+            <p className="font-medium text-slate-700">Click to upload, drag and drop, or Ctrl+V to paste images</p>
+            <p className="text-sm mt-1">SVG, PNG, JPG or GIF (max. 5MB)</p>
+          </div>
+        </div>
+        
+        {formData.images && formData.images.length > 0 && formData.images[0] !== '/placeholder.png' && (
+          <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-4 mt-4">
+            {formData.images.map((img, i) => (
+              <div key={i} className="relative group aspect-square border rounded-lg overflow-hidden bg-slate-50">
+                <img src={img} alt={`Product ${i+1}`} className="w-full h-full object-cover" />
+                <button 
+                  type="button"
+                  onClick={(e) => { e.stopPropagation(); removeImage(i); }}
+                  className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                  title="Remove image"
+                >
+                  &times;
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       <div className="border-t pt-6 flex justify-end space-x-4">
