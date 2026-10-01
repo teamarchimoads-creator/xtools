@@ -89,7 +89,10 @@ export default function ProductForm({ initialData }: ProductFormProps) {
       
       setFormData(prev => {
         const currentImages = prev.images || [];
-        const filtered = currentImages.filter(img => img !== '/placeholder.svg');
+        const filtered = currentImages.filter(img => {
+          const url = typeof img === 'string' ? img : (img as any).url;
+          return url !== '/placeholder.svg';
+        });
         return { ...prev, images: [...filtered, ...uploadedUrls] };
       });
     } catch (err) {
@@ -152,7 +155,13 @@ export default function ProductForm({ initialData }: ProductFormProps) {
     try {
       const payload = { ...formData };
       if (payload.images && payload.images.length > 0) {
-        payload.images = payload.images.map((img, index) => ({
+        const realImages = payload.images.filter(img => {
+          const url = typeof img === 'string' ? img : (img as {url: string}).url;
+          return url !== '/placeholder.svg';
+        });
+        const imagesToSave = realImages.length > 0 ? realImages : ['/placeholder.svg'];
+        
+        payload.images = imagesToSave.map((img, index) => ({
           url: typeof img === 'string' ? img : (img as {url: string}).url,
           isMain: index === 0
         })) as unknown as string[];
