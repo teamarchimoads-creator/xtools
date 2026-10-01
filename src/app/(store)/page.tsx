@@ -213,6 +213,27 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Video Gallery */}
+      <section className="py-16 bg-slate-50">
+        <div className="container mx-auto px-4 max-w-7xl">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl font-medium text-slate-900 mb-2">See XTOOL in Action</h2>
+            <p className="text-slate-500">Watch our diagnostic tools perform real-world tasks.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="rounded-2xl overflow-hidden shadow-lg border border-slate-200 bg-black flex items-center justify-center aspect-video">
+              <video src="/assets/1.mp4" autoPlay loop muted playsInline className="w-full h-full object-cover" />
+            </div>
+            <div className="rounded-2xl overflow-hidden shadow-lg border border-slate-200 bg-black flex items-center justify-center aspect-video">
+              <video src="/assets/2.mp4" autoPlay loop muted playsInline className="w-full h-full object-cover" />
+            </div>
+            <div className="rounded-2xl overflow-hidden shadow-lg border border-slate-200 bg-black flex items-center justify-center aspect-video">
+              <video src="/assets/3.mp4" autoPlay loop muted playsInline className="w-full h-full object-cover" />
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

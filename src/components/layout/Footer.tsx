@@ -49,8 +49,13 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-slate-800 mt-12 pt-8 text-sm text-center">
-          <p>© 2026 Auto Diagnostic Store. Demo website concept.</p>
+        <div className="border-t border-slate-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-slate-400 gap-4">
+          <div className="text-center md:text-left">
+            <p className="font-semibold text-slate-300 mb-1">R.C.S ENTERPRISES (Prop: GAURAV)</p>
+            <p>415/15, Sanjay Nagar, Rohtak, Haryana, 124001</p>
+            <p className="mt-1">GSTIN: 06BVNPG6757K1ZZ</p>
+          </div>
+          <p className="text-center md:text-right">© {new Date().getFullYear()} R.C.S Enterprises. All Rights Reserved.</p>
         </div>
       </div>
     </footer>

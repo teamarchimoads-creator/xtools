@@ -30,6 +30,7 @@ export default function Header() {
             <nav className="hidden lg:flex items-center gap-6 ml-4">
               <Link href="/scanners" className="text-slate-800 font-semibold hover:text-[#418AF2] transition-colors text-[15px]">Scanners</Link>
               <Link href="/categories" className="text-slate-800 font-semibold hover:text-[#418AF2] transition-colors text-[15px]">Categories</Link>
+              <Link href="/reviews" className="text-slate-800 font-semibold hover:text-[#418AF2] transition-colors text-[15px]">Reviews</Link>
               <Link href="/why-us" className="text-slate-800 font-semibold hover:text-[#418AF2] transition-colors text-[15px]">Why Us</Link>
               <Link href="/contact" className="text-slate-800 font-semibold hover:text-[#418AF2] transition-colors text-[15px]">Contact</Link>
             </nav>

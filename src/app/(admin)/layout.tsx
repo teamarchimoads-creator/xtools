@@ -30,17 +30,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <ShoppingBag className="w-5 h-5" />
               <span>Orders</span>
             </Link>
-            <Link href="/admin/customers" className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-slate-800 transition-colors hover:text-white">
-              <Users className="w-5 h-5" />
-              <span>Customers</span>
-            </Link>
+
           </nav>
         </div>
         <div className="mt-auto p-6">
-          <Link href="/admin/settings/payment" className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-slate-800 transition-colors hover:text-white mb-2">
-            <Settings className="w-5 h-5" />
-            <span>Payment Settings</span>
-          </Link>
+
           <Link href="/" className="flex items-center space-x-3 px-3 py-2 rounded-lg text-red-400 hover:bg-slate-800 transition-colors">
             <LogOut className="w-5 h-5" />
             <span>View Store</span>
