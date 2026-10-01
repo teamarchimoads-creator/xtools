@@ -11,6 +11,7 @@ export default function ProductForm({ initialData }: ProductFormProps) {
   const router = useRouter();
   const [categories, setCategories] = useState<any[]>([]);
   const [isDragging, setIsDragging] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   const [formData, setFormData] = useState<Partial<Product>>(initialData || {
@@ -18,7 +19,7 @@ export default function ProductForm({ initialData }: ProductFormProps) {
     slug: '', shortDescription: '', description: '',
     price: 0, originalPrice: 0, discount: 0,
     images: ['/placeholder.png'], rating: 5, reviewCount: 0,
-    stock: 0, lowStockThreshold: 5, status: 'Published',
+    stock: 0, lowStockThreshold: 5, status: 'published',
     features: [''], specifications: {}, compatibility: [''],
     inTheBox: [''], warranty: '1 Year Warranty'
   });
@@ -60,13 +61,34 @@ export default function ProductForm({ initialData }: ProductFormProps) {
     if (e.dataTransfer.files) handleFiles(e.dataTransfer.files);
   };
   
-  const handleFiles = (files: FileList) => {
-    const newImages = Array.from(files).map(file => URL.createObjectURL(file));
-    setFormData(prev => {
-      const currentImages = prev.images || [];
-      const filtered = currentImages.filter(img => img !== '/placeholder.png');
-      return { ...prev, images: [...filtered, ...newImages] };
-    });
+  const handleFiles = async (files: FileList) => {
+    setIsUploading(true);
+    try {
+      const uploadedUrls: string[] = [];
+      for (const file of Array.from(files)) {
+        const form = new FormData();
+        form.append('file', file);
+        const res = await fetch('/api/upload', { method: 'POST', body: form });
+        const data = await res.json();
+        
+        if (res.ok && data.url) {
+          uploadedUrls.push(data.url);
+        } else {
+          alert('Upload failed: ' + (data.error || 'Unknown error'));
+        }
+      }
+      
+      setFormData(prev => {
+        const currentImages = prev.images || [];
+        const filtered = currentImages.filter(img => img !== '/placeholder.png');
+        return { ...prev, images: [...filtered, ...uploadedUrls] };
+      });
+    } catch (err) {
+      console.error('Failed to upload:', err);
+      alert('An error occurred during file upload.');
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   const removeImage = (index: number) => {
@@ -78,10 +100,21 @@ export default function ProductForm({ initialData }: ProductFormProps) {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: ['price', 'originalPrice', 'discount', 'stock'].includes(name) ? Number(value) : value
-    }));
+    setFormData(prev => {
+      const parsedValue = ['price', 'originalPrice', 'discount', 'stock'].includes(name) ? Number(value) : value;
+      const updatedData = { ...prev, [name]: parsedValue };
+      
+      if (name === 'price' || name === 'originalPrice') {
+        const p = name === 'price' ? Number(value) : prev.price || 0;
+        const op = name === 'originalPrice' ? Number(value) : prev.originalPrice || 0;
+        if (op > 0 && p > 0 && op > p) {
+          updatedData.discount = Math.round(((op - p) / op) * 100);
+        } else {
+          updatedData.discount = 0;
+        }
+      }
+      return updatedData;
+    });
   };
 
   const handleFeatureChange = (index: number, value: string) => {
@@ -95,23 +128,38 @@ export default function ProductForm({ initialData }: ProductFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      const payload = { ...formData };
+      if (payload.images && payload.images.length > 0 && typeof payload.images[0] === 'string') {
+        payload.images = payload.images.map((url, index) => ({
+          url: typeof url === 'string' ? url : (url as any).url,
+          isMain: index === 0
+        })) as any;
+      }
+
+      let res;
       if (initialData?.id) {
-        await fetch(`/api/admin/products/${initialData.id}`, {
+        res = await fetch(`/api/admin/products/${initialData.id}`, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(formData)
+          body: JSON.stringify(payload)
         });
       } else {
-        await fetch('/api/admin/products', {
+        res = await fetch('/api/admin/products', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(formData)
+          body: JSON.stringify(payload)
         });
       }
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to save product');
+      }
+
       router.push('/admin/products');
-    } catch (err) {
+    } catch (err: any) {
       console.error('Failed to save product:', err);
-      alert('Error saving product');
+      alert(err.message || 'Error saving product');
     }
   };
 
@@ -184,7 +232,7 @@ export default function ProductForm({ initialData }: ProductFormProps) {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">Discount (%)</label>
-              <input type="number" name="discount" value={formData.discount || 0} onChange={handleChange} className="w-full border rounded-lg p-2 text-slate-900 bg-white" />
+              <input readOnly type="number" name="discount" value={formData.discount || 0} className="w-full border rounded-lg p-2 text-slate-900 bg-slate-100 cursor-not-allowed" />
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">Stock Quantity</label>
@@ -222,26 +270,37 @@ export default function ProductForm({ initialData }: ProductFormProps) {
             onChange={(e) => e.target.files && handleFiles(e.target.files)}
           />
           <div className="text-slate-500">
-            <p className="font-medium text-slate-700">Click to upload, drag and drop, or Ctrl+V to paste images</p>
-            <p className="text-sm mt-1">SVG, PNG, JPG or GIF (max. 5MB)</p>
+            {isUploading ? (
+              <p className="font-medium text-blue-600">Uploading images...</p>
+            ) : (
+              <>
+                <p className="font-medium text-slate-700">Click to upload, drag and drop, or Ctrl+V to paste images</p>
+                <p className="text-sm mt-1">SVG, PNG, JPG or GIF (max. 5MB)</p>
+              </>
+            )}
           </div>
         </div>
         
-        {formData.images && formData.images.length > 0 && formData.images[0] !== '/placeholder.png' && (
+        {formData.images && formData.images.length > 0 && (
           <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-4 mt-4">
-            {formData.images.map((img, i) => (
-              <div key={i} className="relative group aspect-square border rounded-lg overflow-hidden bg-slate-50">
-                <img src={img} alt={`Product ${i+1}`} className="w-full h-full object-cover" />
-                <button 
-                  type="button"
-                  onClick={(e) => { e.stopPropagation(); removeImage(i); }}
-                  className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                  title="Remove image"
-                >
-                  &times;
-                </button>
-              </div>
-            ))}
+            {formData.images.map((img, i) => {
+              const imgSrc = typeof img === 'string' ? img : (img as any).url;
+              if (imgSrc === '/placeholder.png') return null;
+              
+              return (
+                <div key={i} className="relative group aspect-square border rounded-lg overflow-hidden bg-slate-50">
+                  <img src={imgSrc} alt={`Product ${i+1}`} className="w-full h-full object-cover" />
+                  <button 
+                    type="button"
+                    onClick={(e) => { e.stopPropagation(); removeImage(i); }}
+                    className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                    title="Remove image"
+                  >
+                    &times;
+                  </button>
+                </div>
+              );
+            })}
           </div>
         )}
       </div>
