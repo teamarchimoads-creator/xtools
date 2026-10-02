@@ -97,7 +97,25 @@ const seedAdditionalProducts = async () => {
         originalPrice: 84999,
         images: [{ url: '/placeholder.svg', isMain: true }],
         stock: 20,
-        status: 'published'
+        status: 'published',
+        specifications: [
+          { name: 'Operating System', value: 'Android 10' },
+          { name: 'Processor', value: '4 Core 1.50GHz' },
+          { name: 'Memory', value: '4G RAM, 64G ROM' },
+          { name: 'Display', value: '8-inch, 1024×768P' },
+          { name: 'Connectivity', value: 'Type-C' },
+          { name: 'Communication', value: 'Wired' },
+          { name: 'Camera', value: '8.0 Megapixel, AF with Flashlight' },
+          { name: 'Sensors', value: 'Gravity Accelerometer, Ambient Light Sensor' },
+          { name: 'Battery', value: '5000mAh, 7.3V' },
+          { name: 'Working Voltage', value: '9 ~ 36V' },
+          { name: 'Operating Temperature', value: '0 to 40°C' },
+          { name: 'Storage Temperature', value: '-40 to 60°C' },
+          { name: 'Humidity', value: '<90%' },
+          { name: 'Dimension (L×W×H)', value: '274mm × 175mm × 33.8mm' },
+          { name: 'Protocol Compatibility', value: 'CANFD, DoIP' },
+          { name: 'Auto Input/Output', value: 'Microphone, Speaker' }
+        ]
       },
       {
         name: 'XT90',
@@ -111,7 +129,31 @@ const seedAdditionalProducts = async () => {
         originalPrice: 114999,
         images: [{ url: '/placeholder.svg', isMain: true }],
         stock: 10,
-        status: 'published'
+        status: 'published',
+        features: [
+          'Online ECU Programming & Coding',
+          'Programmable Module Installation',
+          'New Topology Mapping function',
+          'ADAS calibration supported',
+          '40+ Maintenance Functions',
+          'Full-System Diagnostic'
+        ],
+        specifications: [
+          { name: 'Operating System', value: 'Android 10' },
+          { name: 'Processor', value: '4 Core 1.50GHz' },
+          { name: 'Memory', value: '4G RAM, 128G ROM' },
+          { name: 'Display', value: '9.7-inch, 1024×768P' },
+          { name: 'Communication Method', value: 'Wi-Fi, Wired' },
+          { name: 'Camera', value: '8.0 Megapixel, AF with Flashlight' },
+          { name: 'Auto Input/Output', value: 'Microphone, Speaker' },
+          { name: 'Battery', value: '6400 mAh, 7.2V' },
+          { name: 'Working Voltage', value: '9-36V' },
+          { name: 'Connectivity', value: 'Type-C' },
+          { name: 'Working Temperature', value: '0 to 40°C' },
+          { name: 'Storage Temperature', value: '-40 to 60°C' },
+          { name: 'Dimension (L×W×H)', value: '313mm X 218mm X 30mm' },
+          { name: 'Protocol Compatibility', value: 'CANFD, DoIP' }
+        ]
       },
       {
         name: 'COMPASS',
@@ -125,7 +167,24 @@ const seedAdditionalProducts = async () => {
         originalPrice: 99999,
         images: [{ url: '/placeholder.svg', isMain: true }],
         stock: 15,
-        status: 'published'
+        status: 'published',
+        features: [
+          'FEATURING THE TECHNICIAN CHOICE REPAIR INFORMATICS DATABASE-AUTODATA: Access a comprehensive suite of Confirmed Fixes / RepairProcedures / Wiring Diagrams / Labor Guides-all designed to provide the fastest and most accurate repair insights in the aftermarket industry. *Require additional purchase',
+          'AUTOAUTH™ FOR FCA SGW ACCESS: Unlock secure gateway access for FCA vehicles, enabling advanced diagnostics and programming without restrictions.',
+          'COMPREHENSIVE VEHICLE COVERAGE: Supports a wide range of U.S., European, and Asian vehicles, along with ADAS calibration, advanced topology mapping, and online coding for major brands like VAG, BMW, and Mercedes-Benz.'
+        ],
+        specifications: [
+          { name: 'Operating System', value: 'Android 10.0' },
+          { name: 'Ports', value: 'USB(Type-C)' },
+          { name: 'Memory', value: '8G+128G' },
+          { name: 'Battery', value: '6400 mAh, 7.2V' },
+          { name: 'Display', value: '10.1-inch, 1920×1200' },
+          { name: 'Working Temperature', value: '0 ~ 40°C' },
+          { name: 'Camera', value: '8MP rear' },
+          { name: 'Processor', value: '2.2GHz+1.8GHz Octa-core Processor' },
+          { name: 'VCI Communication', value: 'Wi-Fi / Wired' },
+          { name: 'Compatible Protocol', value: 'UDS, KWP2000, K_Line/L_Line, CAN/CANFD, DoIP, SAE J1939, SAE J1708, SAE J1587, SAE J1850, etc.' }
+        ]
       }
     ];
 

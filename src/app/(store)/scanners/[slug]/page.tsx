@@ -96,7 +96,12 @@ export default function ProductDetailPage() {
               <div className="flex items-end space-x-3 mb-6">
                 <span className="text-4xl font-bold text-slate-900">₹{product.price.toLocaleString('en-IN')}</span>
                 {product.originalPrice > product.price && (
-                  <span className="text-xl text-slate-400 line-through mb-1">₹{product.originalPrice.toLocaleString('en-IN')}</span>
+                  <>
+                    <span className="text-xl text-slate-400 line-through mb-1">₹{product.originalPrice.toLocaleString('en-IN')}</span>
+                    <span className="mb-1.5 inline-flex items-center bg-blue-50 text-blue-700 text-sm font-bold px-2 py-0.5 rounded border border-blue-100 uppercase tracking-wide">
+                      {Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% OFF
+                    </span>
+                  </>
                 )}
               </div>
 
@@ -121,7 +126,7 @@ export default function ProductDetailPage() {
               <div className="grid grid-cols-2 gap-4 text-sm text-slate-600 border-t pt-8">
                 <div className="flex items-center space-x-2">
                   <Shield className="w-5 h-5 text-blue-600" />
-                  <span>{product.warranty}</span>
+                  <span>{product.warranty || '1 Year Warranty'}</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Truck className="w-5 h-5 text-blue-600" />

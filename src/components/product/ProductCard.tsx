@@ -62,16 +62,13 @@ export default function ProductCard({ product }: { product: Product }) {
             </h3>
           </Link>
 
-          <div className="flex items-center space-x-1 mb-3">
-            <div className="flex text-amber-400">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className={`w-3.5 h-3.5 ${i < Math.floor(product.rating) ? 'fill-current' : 'text-slate-200'}`} />
-              ))}
+          {product.originalPrice > product.price && (
+            <div className="mb-3">
+              <span className="inline-flex items-center bg-blue-50 text-blue-700 text-[11px] font-bold px-2 py-0.5 rounded border border-blue-100 uppercase tracking-wide">
+                Save {Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}%
+              </span>
             </div>
-            <span className="text-xs text-slate-500 ml-1">
-              (customer favourite)
-            </span>
-          </div>
+          )}
 
           <div className="flex items-baseline space-x-2 mb-2">
             <span className="text-xl font-bold text-slate-900">
