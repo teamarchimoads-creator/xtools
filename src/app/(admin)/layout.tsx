@@ -1,8 +1,12 @@
+'use client';
 import React from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { LayoutDashboard, Package, Grid, ShoppingBag, Users, Settings, LogOut } from 'lucide-react';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname() || '';
+
   return (
     <div className="flex h-screen bg-slate-100">
       {/* Sidebar */}
@@ -14,20 +18,20 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </div>
           <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold mt-6 mb-4">Menu</div>
           <nav className="space-y-1">
-            <Link href="/admin" className="flex items-center space-x-3 px-3 py-2 rounded-lg text-white bg-blue-600/10 hover:bg-slate-800 transition-colors">
-              <LayoutDashboard className="w-5 h-5 text-blue-500" />
+            <Link href="/admin" className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${pathname === '/admin' ? 'text-white bg-blue-600/20' : 'hover:bg-slate-800 hover:text-white'}`}>
+              <LayoutDashboard className={`w-5 h-5 ${pathname === '/admin' ? 'text-blue-500' : ''}`} />
               <span>Dashboard</span>
             </Link>
-            <Link href="/admin/products" className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-slate-800 transition-colors hover:text-white">
-              <Package className="w-5 h-5" />
+            <Link href="/admin/products" className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${pathname.startsWith('/admin/products') ? 'text-white bg-blue-600/20' : 'hover:bg-slate-800 hover:text-white'}`}>
+              <Package className={`w-5 h-5 ${pathname.startsWith('/admin/products') ? 'text-blue-500' : ''}`} />
               <span>Products</span>
             </Link>
-            <Link href="/admin/categories" className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-slate-800 transition-colors hover:text-white">
-              <Grid className="w-5 h-5" />
+            <Link href="/admin/categories" className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${pathname.startsWith('/admin/categories') ? 'text-white bg-blue-600/20' : 'hover:bg-slate-800 hover:text-white'}`}>
+              <Grid className={`w-5 h-5 ${pathname.startsWith('/admin/categories') ? 'text-blue-500' : ''}`} />
               <span>Categories</span>
             </Link>
-            <Link href="/admin/orders" className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-slate-800 transition-colors hover:text-white">
-              <ShoppingBag className="w-5 h-5" />
+            <Link href="/admin/orders" className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${pathname.startsWith('/admin/orders') ? 'text-white bg-blue-600/20' : 'hover:bg-slate-800 hover:text-white'}`}>
+              <ShoppingBag className={`w-5 h-5 ${pathname.startsWith('/admin/orders') ? 'text-blue-500' : ''}`} />
               <span>Orders</span>
             </Link>
 
