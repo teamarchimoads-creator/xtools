@@ -22,6 +22,7 @@ export interface Product {
   compatibility: string[];
   inTheBox: string[];
   warranty: string;
+  sortOrder?: number;
   createdAt?: string;
   updatedAt?: string;
 }

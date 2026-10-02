@@ -29,6 +29,7 @@ export interface IProduct extends Document {
   compatibility: string[];
   inTheBox: string[];
   warranty: string;
+  sortOrder: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -66,7 +67,8 @@ const ProductSchema: Schema<IProduct> = new Schema({
   }],
   compatibility: [{ type: String }],
   inTheBox: [{ type: String }],
-  warranty: { type: String }
+  warranty: { type: String },
+  sortOrder: { type: Number, default: 0 }
 }, {
   timestamps: true
 });

@@ -31,7 +31,7 @@ export async function GET(request: Request) {
       ];
     }
     
-    const products = await Product.find(query).sort({ createdAt: -1 }).lean();
+    const products = await Product.find(query).sort({ sortOrder: 1, createdAt: -1 }).lean();
     
     const formattedProducts = products.map(prod => ({
       ...prod,

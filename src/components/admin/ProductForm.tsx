@@ -29,7 +29,7 @@ export default function ProductForm({ initialData }: ProductFormProps) {
     images: ['/placeholder.svg'], rating: 5, reviewCount: 0,
     stock: 0, lowStockThreshold: 5, status: 'in_stock',
     features: [''], specifications: defaultSpecs as any, compatibility: [''],
-    inTheBox: [''], warranty: '1 Year Warranty'
+    inTheBox: [''], warranty: '1 Year Warranty', sortOrder: 0
   });
 
   useEffect(() => {
@@ -113,7 +113,7 @@ export default function ProductForm({ initialData }: ProductFormProps) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => {
-      const parsedValue = ['price', 'originalPrice', 'discount', 'stock'].includes(name) ? Number(value) : value;
+      const parsedValue = ['price', 'originalPrice', 'discount', 'stock', 'sortOrder'].includes(name) ? Number(value) : value;
       const updatedData = { ...prev, [name]: parsedValue };
       
       if (name === 'price' || name === 'originalPrice') {
@@ -236,12 +236,18 @@ export default function ProductForm({ initialData }: ProductFormProps) {
             <textarea name="description" value={formData.description || ''} onChange={handleChange} className="w-full border rounded-lg p-2 h-20 text-slate-900 bg-white" />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Status</label>
-            <select name="status" value={formData.status || 'in_stock'} onChange={handleChange} className="w-full border rounded-lg p-2 text-slate-900 bg-white">
-              <option value="in_stock">In Stock</option>
-              <option value="out_of_stock">Out of Stock</option>
-            </select>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">Status</label>
+              <select name="status" value={formData.status || 'in_stock'} onChange={handleChange} className="w-full border rounded-lg p-2 text-slate-900 bg-white">
+                <option value="in_stock">In Stock</option>
+                <option value="out_of_stock">Out of Stock</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">Sort Order (0 is first)</label>
+              <input type="number" name="sortOrder" value={formData.sortOrder || 0} onChange={handleChange} className="w-full border rounded-lg p-2 text-slate-900 bg-white" />
+            </div>
           </div>
         </div>
 
