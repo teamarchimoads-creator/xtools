@@ -53,13 +53,13 @@ export default function ProductDetailPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             {/* Image section */}
             <div className="flex flex-col gap-4">
-              <div className="bg-slate-50 rounded-xl p-8 flex items-center justify-center relative">
+              <div className="flex items-center justify-center relative w-full">
                 {product.discount > 0 && (
-                  <div className="absolute top-4 left-4 bg-red-500 text-white font-bold px-3 py-1 rounded">
+                  <div className="absolute top-0 left-0 bg-red-500 text-white font-bold px-3 py-1 rounded z-10">
                     {product.discount}% OFF
                   </div>
                 )}
-                <img src={(product.images[activeImageIndex] as any)?.url || product.images[activeImageIndex] || '/placeholder.svg'} alt={product.name} className="w-full h-auto max-h-[500px] object-contain mix-blend-multiply transition-opacity duration-300" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = '/placeholder.svg'; }} />
+                <img src={(product.images[activeImageIndex] as any)?.url || product.images[activeImageIndex] || '/placeholder.svg'} alt={product.name} className="w-full h-auto max-h-[600px] object-contain transition-opacity duration-300 transform scale-110" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = '/placeholder.svg'; }} />
               </div>
               
               {/* Thumbnails */}
