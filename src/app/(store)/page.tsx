@@ -70,21 +70,23 @@ export default function Home() {
       <section className="bg-[#2B88F0] text-white py-10 lg:py-12 relative overflow-hidden">
         <div className="container mx-auto px-8 max-w-7xl">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="z-10">
-              <div className="inline-block border border-blue-300 rounded-full px-4 py-1.5 text-xs font-bold tracking-wider mb-6 bg-white/10 backdrop-blur-sm">
+            <div className="z-10 relative">
+              <div className="inline-flex items-center gap-2 border border-white/20 rounded-full px-4 py-1.5 text-xs font-bold tracking-wider mb-6 bg-white/10 backdrop-blur-md shadow-[0_0_15px_rgba(255,255,255,0.1)]">
+                <span className="w-2 h-2 rounded-full bg-blue-300 animate-pulse"></span>
                 AUTHORISED XTOOL DIAGNOSTIC SCANNER
               </div>
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-medium mb-4 leading-tight text-white">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-blue-50 to-blue-200 drop-shadow-sm">
                 Professional-Level<br />Automotive Diagnostic Tools
               </h1>
-              <p className="text-base text-blue-50 max-w-xl mb-8 leading-relaxed font-light">
+              <p className="text-lg text-blue-50/90 max-w-xl mb-10 leading-relaxed font-light tracking-wide">
                 Shop XTOOL car diagnostic scanners for OBD2 scanning, ECU diagnostics, coding, live data and advanced workshop functions.
               </p>
-              <div className="flex flex-wrap gap-4">
-                <Link href="/scanners" className="bg-white text-[#2B88F0] hover:bg-slate-50 font-bold py-3 px-6 rounded-lg transition-colors text-base shadow-lg">
-                  Shop Scanners →
+              <div className="flex flex-wrap gap-4 items-center">
+                <Link href="/scanners" className="group relative inline-flex items-center justify-center bg-white text-[#2B88F0] hover:bg-blue-50 font-bold py-3.5 px-8 rounded-xl transition-all duration-300 shadow-xl hover:shadow-blue-900/20 hover:-translate-y-0.5 overflow-hidden">
+                  <span className="relative z-10 flex items-center gap-2">Shop Scanners <span className="group-hover:translate-x-1 transition-transform">→</span></span>
+                  <div className="absolute inset-0 bg-white/50 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                 </Link>
-                <Link href="/contact" className="bg-[#1C3E6D] hover:bg-[#153155] text-white font-bold py-3 px-6 rounded-lg transition-colors text-base shadow-lg border border-[#1C3E6D]">
+                <Link href="/contact" className="inline-flex items-center justify-center bg-white/10 hover:bg-white/20 text-white font-bold py-3.5 px-8 rounded-xl transition-all duration-300 backdrop-blur-md border border-white/20 hover:border-white/40 shadow-lg hover:-translate-y-0.5">
                   Talk to Expert
                 </Link>
               </div>
