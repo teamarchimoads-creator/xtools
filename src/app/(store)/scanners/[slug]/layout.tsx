@@ -3,14 +3,15 @@ import connectToDatabase from '@/lib/mongodb';
 import Product from '@/models/Product';
 
 type Props = {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
   children: React.ReactNode;
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   try {
+    const resolvedParams = await params;
     await connectToDatabase();
-    const product = await Product.findOne({ slug: params.slug }).lean();
+    const product = await Product.findOne({ slug: resolvedParams.slug }).lean();
 
     if (!product) {
       return {
