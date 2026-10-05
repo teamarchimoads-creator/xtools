@@ -45,8 +45,9 @@ export default function Header() {
                 type="text" 
                 placeholder="Search scanners..." 
                 className="px-3 py-2 w-full text-sm outline-none text-slate-700 placeholder:text-slate-400 font-medium"
+                suppressHydrationWarning
               />
-              <button className="bg-[#F0F6FF] h-full px-3 text-[#418AF2] hover:bg-blue-100 transition-colors border-l border-slate-200 flex items-center justify-center">
+              <button suppressHydrationWarning className="bg-[#F0F6FF] h-full px-3 text-[#418AF2] hover:bg-blue-100 transition-colors border-l border-slate-200 flex items-center justify-center">
                 <Search className="w-4 h-4" />
               </button>
             </div>
