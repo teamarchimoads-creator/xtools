@@ -75,7 +75,7 @@ export default function Home() {
                 <span className="w-2 h-2 rounded-full bg-blue-300 animate-pulse"></span>
                 AUTHORISED XTOOL DIAGNOSTIC SCANNER
               </div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-blue-50 to-blue-200 drop-shadow-sm">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight tracking-tight text-white md:text-transparent md:bg-clip-text md:bg-gradient-to-r md:from-white md:via-blue-50 md:to-blue-200 drop-shadow-sm">
                 Professional-Level<br />Automotive Diagnostic Tools
               </h1>
               <p className="text-lg text-blue-50/90 max-w-xl mb-10 leading-relaxed font-light tracking-wide">
