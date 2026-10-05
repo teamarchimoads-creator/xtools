@@ -72,7 +72,10 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="z-10 relative">
               <div className="inline-flex items-center gap-2 border border-white/20 rounded-full px-4 py-1.5 text-xs font-bold tracking-wider mb-6 bg-white/10 backdrop-blur-md shadow-[0_0_15px_rgba(255,255,255,0.1)]">
-                <span className="w-2 h-2 rounded-full bg-blue-300 animate-pulse"></span>
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-white"></span>
+                </span>
                 AUTHORISED XTOOL DIAGNOSTIC SCANNER
               </div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight tracking-tight text-white md:text-transparent md:bg-clip-text md:bg-gradient-to-r md:from-white md:via-blue-50 md:to-blue-200 drop-shadow-sm">
