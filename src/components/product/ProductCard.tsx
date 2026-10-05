@@ -88,9 +88,14 @@ export default function ProductCard({ product }: { product: Product }) {
           <div className="mt-auto grid grid-cols-[3fr_2fr] gap-2">
             <button 
               onClick={handleAddToCart}
-              className="w-full bg-[#1C3E6D] hover:bg-[#153155] text-white font-semibold py-2.5 px-3 rounded-lg transition-colors text-sm text-center"
+              disabled={product.status === 'out_of_stock'}
+              className={`w-full font-semibold py-2.5 px-3 rounded-lg transition-colors text-sm text-center ${
+                product.status === 'out_of_stock'
+                  ? 'bg-slate-200 text-slate-500 cursor-not-allowed'
+                  : 'bg-[#1C3E6D] hover:bg-[#153155] text-white'
+              }`}
             >
-              Add to Cart
+              {product.status === 'out_of_stock' ? 'Out of Stock' : 'Add to Cart'}
             </button>
             <Link 
               href={`/scanners/${product.id}`}

@@ -29,7 +29,7 @@ export default function CategoryDetailPage() {
         const foundCategory = catData.categories?.find((c: any) => c.slug === slug);
         setCategory(foundCategory || null);
         
-        setProducts(prodData.products?.filter((p: any) => p.status === 'published') || []);
+        setProducts(prodData.products?.filter((p: any) => p.status === 'published' || p.status === 'out_of_stock') || []);
       } catch (error) {
         console.error('Failed to fetch data:', error);
       } finally {

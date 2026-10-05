@@ -40,7 +40,7 @@ export default function Home() {
       try {
         const res = await fetch('/api/products');
         const data = await res.json();
-        setProducts(data.products?.filter((p: any) => p.status === 'published') || []);
+        setProducts(data.products?.filter((p: any) => p.status === 'published' || p.status === 'out_of_stock') || []);
       } catch (error) {
         console.error('Failed to fetch products:', error);
       } finally {
@@ -52,7 +52,7 @@ export default function Home() {
       try {
         const res = await fetch('/api/categories');
         const data = await res.json();
-        setCategories(data.categories || []);
+        setCategories([...(data.categories || [])].reverse());
       } catch (error) {
         console.error('Failed to fetch categories:', error);
       } finally {

@@ -25,7 +25,7 @@ export default function ScannersPage() {
   }, []);
 
   const filteredProducts = products.filter(p => 
-    p.status === 'published' && (
+    (p.status === 'published' || p.status === 'out_of_stock') && (
       p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
       p.sku.toLowerCase().includes(searchQuery.toLowerCase())
     )

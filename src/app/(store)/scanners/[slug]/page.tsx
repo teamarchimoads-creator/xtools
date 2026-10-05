@@ -114,11 +114,30 @@ export default function ProductDetailPage() {
               <div className="flex flex-col sm:flex-row gap-4 mb-8">
                 <button 
                   onClick={() => addItem(product)}
-                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-xl transition-colors text-lg text-center"
+                  disabled={product.status === 'out_of_stock'}
+                  className={`flex-1 font-bold py-4 px-8 rounded-xl transition-colors text-lg text-center ${
+                    product.status === 'out_of_stock'
+                      ? 'bg-slate-200 text-slate-500 cursor-not-allowed'
+                      : 'bg-blue-600 hover:bg-blue-700 text-white'
+                  }`}
                 >
-                  Add to Cart
+                  {product.status === 'out_of_stock' ? 'Out of Stock' : 'Add to Cart'}
                 </button>
-                <Link href="/cart" onClick={() => addItem(product)} className="flex-1 bg-slate-900 hover:bg-slate-800 text-white font-bold py-4 px-8 rounded-xl transition-colors text-lg text-center">
+                <Link 
+                  href={product.status === 'out_of_stock' ? '#' : '/cart'} 
+                  onClick={(e) => {
+                    if (product.status === 'out_of_stock') {
+                      e.preventDefault();
+                    } else {
+                      addItem(product);
+                    }
+                  }} 
+                  className={`flex-1 font-bold py-4 px-8 rounded-xl transition-colors text-lg text-center ${
+                    product.status === 'out_of_stock'
+                      ? 'bg-slate-200 text-slate-500 cursor-not-allowed pointer-events-none'
+                      : 'bg-slate-900 hover:bg-slate-800 text-white'
+                  }`}
+                >
                   Buy Now
                 </Link>
               </div>
