@@ -3,6 +3,7 @@ import Header from '../../components/layout/Header';
 import Footer from '../../components/layout/Footer';
 import FloatingCart from '../../components/cart/FloatingCart';
 import WhatsAppBadge from '../../components/layout/WhatsAppBadge';
+import OfferPopup from '../../components/layout/OfferPopup';
 
 export default function StoreLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -14,6 +15,7 @@ export default function StoreLayout({ children }: { children: React.ReactNode })
       <Footer />
       <FloatingCart />
       <WhatsAppBadge />
+      <OfferPopup />
     </div>
   );
 }
